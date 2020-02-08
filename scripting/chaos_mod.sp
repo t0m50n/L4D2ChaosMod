@@ -20,23 +20,35 @@ public Plugin myinfo =
 };
 
 #define EFFECTS_PATH "configs/effects.cfg"
+#define CVAR_FLAGS FCVAR_NOTIFY
 
 ArrayList g_effects;
 Handle g_effect_timer;
 StringMap g_effect_active_timers;
 
 ConVar g_time_between_effects;
+ConVar g_enabled;
 
 public void OnPluginStart()
 {
-	g_time_between_effects = CreateConVar("chaosmod_time_between_effects", "15", _, _, true, 1.0);
-	g_time_between_effects.AddChangeHook(OnTimeBetweenEffectsChange);
+	CreateConVar("chaosmod_version", PLUGIN_VERSION, " Version of Chaos Mod on this server ", FCVAR_SPONLY|FCVAR_DONTRECORD);
+	
+	g_enabled = CreateConVar("chaosmod_enabled", "1", "Enable/Disable Chaos Mod", CVAR_FLAGS);
+	g_enabled.AddChangeHook(OnCvarEnabledChanged);
+	
+	g_time_between_effects = CreateConVar("chaosmod_time_between_effects", "15", "How long to wait in seconds between activating effects", CVAR_FLAGS, true, 0.1);
+	g_time_between_effects.AddChangeHook(OnCvarTimeBetweenEffectsChanged);
 	
 	HookEvent("server_cvar", Event_Cvar, EventHookMode_Pre);
 	
 	g_effect_active_timers = new StringMap();
 	
 	LoadEffects();
+	StartEffectTimer();
+}
+
+void StartEffectTimer()
+{
 	g_effect_timer = CreateTimer(g_time_between_effects.FloatValue, Timer_StartRandomEffect, _, TIMER_REPEAT);
 }
 
@@ -82,36 +94,38 @@ void LoadEffects()
 	} while (kv.GotoNextKey());
 	delete kv;
 
-#if defined DEBUG
-	PrintToChatAll("Number of effects: %d", g_effects.Length);
-	for (int i = 0; i < g_effects.Length; i++)
-	{
-		char key_value[255];
-		StringMap effect = view_as<StringMap>(g_effects.Get(i));
-		effect.GetString("name", key_value, sizeof(key_value));
-		PrintToChatAll(key_value);
-	}
-#endif
+	#if defined DEBUG
+		PrintToChatAll("Number of effects: %d", g_effects.Length);
+		for (int i = 0; i < g_effects.Length; i++)
+		{
+			char key_value[255];
+			StringMap effect = view_as<StringMap>(g_effects.Get(i));
+			effect.GetString("name", key_value, sizeof(key_value));
+			PrintToChatAll(key_value);
+		}
+	#endif
 }
 
-public void OnTimeBetweenEffectsChange(ConVar convar, char[] oldValue, char[] newValue)
+public void OnCvarTimeBetweenEffectsChanged(ConVar convar, char[] oldValue, char[] newValue)
 {
 	CloseHandle(g_effect_timer);
 	g_effect_timer = CreateTimer(g_time_between_effects.FloatValue, Timer_StartRandomEffect, _, TIMER_REPEAT);
 }
 
+public void OnCvarEnabledChanged(ConVar convar, char[] oldValue, char[] newValue)
+{
+	if (convar.BoolValue)
+	{
+		StartEffectTimer();
+	}
+	else
+	{
+		CloseHandle(g_effect_timer);
+	}
+}
+
 public Action Event_Cvar(Event event, const char[] name, bool dontBroadcast)
 {
-	/*
-	char cvar_name[255];
-	event.GetString("cvarname", cvar_name, sizeof(cvar_name));
-	
-	if (StrEqual("sv_tags", cvar_name))
-	{
-		event.BroadcastDisabled = true;
-	}
-	*/
-	
 	event.BroadcastDisabled = true;
 	
 	return Plugin_Continue;
