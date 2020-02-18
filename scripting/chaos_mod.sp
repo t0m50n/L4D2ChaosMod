@@ -24,7 +24,6 @@ public Plugin myinfo =
 
 ArrayList g_effects;
 Handle g_effect_timer;
-StringMap g_effect_active_timers;
 
 ConVar g_time_between_effects;
 ConVar g_enabled;
@@ -40,8 +39,6 @@ public void OnPluginStart()
 	g_time_between_effects.AddChangeHook(OnCvarTimeBetweenEffectsChanged);
 	
 	HookEvent("server_cvar", Event_Cvar, EventHookMode_Pre);
-	
-	g_effect_active_timers = new StringMap();
 	
 	LoadEffects();
 	StartEffectTimer();
@@ -73,21 +70,17 @@ void LoadEffects()
 	do
 	{
 		StringMap effect = new StringMap();
-		char key_value[255];
+		char buffer[255];
 		
-		kv.GetSectionName(key_value, sizeof(key_value));
-		effect.SetString("name", key_value, false);
+		kv.GetSectionName(buffer, sizeof(buffer));
+		effect.SetString("name", buffer);
 		
-		kv.GetString("cvar", key_value, sizeof(key_value));
-		ConVar cvar = FindConVar(key_value);
-		if (cvar == null)
-		{
-			SetFailState("cvar %s not found", key_value);
-		}
-		effect.SetValue("cvar", cvar);
+		kv.GetString("start", buffer, sizeof(buffer));
+		effect.SetString("start", buffer);
 		
-		effect.SetValue("start", kv.GetFloat("start"));
-		effect.SetValue("end", kv.GetFloat("end"));
+		kv.GetString("end", buffer, sizeof(buffer));
+		effect.SetString("end", buffer);
+		
 		effect.SetValue("active_time", kv.GetFloat("active_time"));
 		
 		g_effects.Push(effect);
@@ -104,6 +97,13 @@ void LoadEffects()
 			PrintToChatAll(key_value);
 		}
 	#endif
+}
+
+public Action Event_Cvar(Event event, const char[] name, bool dontBroadcast)
+{
+	// event.BroadcastDisabled = true;
+	
+	return Plugin_Handled;
 }
 
 public void OnCvarTimeBetweenEffectsChanged(ConVar convar, char[] oldValue, char[] newValue)
@@ -124,58 +124,32 @@ public void OnCvarEnabledChanged(ConVar convar, char[] oldValue, char[] newValue
 	}
 }
 
-public Action Event_Cvar(Event event, const char[] name, bool dontBroadcast)
-{
-	event.BroadcastDisabled = true;
-	
-	return Plugin_Continue;
-}
-
 public Action Timer_StartRandomEffect(Handle timer)
 {
 	int random_effect_i = GetRandomInt(0, g_effects.Length - 1);
 	StringMap random_effect = view_as<StringMap>(g_effects.Get(random_effect_i));
 	
-	
-	ConVar cvar;
-	char cvar_name[255];
-	Handle active_timer;
-	random_effect.GetValue("cvar", cvar);
-	cvar.GetName(cvar_name, sizeof(cvar_name));
-	
-	if (g_effect_active_timers.GetValue(cvar_name, active_timer))
-	{
-		CloseHandle(active_timer);
-	}
-	
-	float value;
-	random_effect.GetValue("start", value);
-	cvar.SetFloat(value);
+	char command[255];
+	random_effect.GetString("start", command, sizeof(command));
+	ServerCommand(command);
 	
 	char effect_name[255];
 	random_effect.GetString("name", effect_name, sizeof(effect_name));
 	PrintToChatAll("Effect %s started.", effect_name);
 
+	float value;
 	random_effect.GetValue("active_time", value);
-	active_timer = CreateTimer(value, Timer_StopEffect, random_effect_i);
-	g_effect_active_timers.SetValue(cvar_name, active_timer);
+	CreateTimer(value, Timer_StopEffect, random_effect_i);
 }
 
 public Action Timer_StopEffect(Handle timer, any effect_i)
 {
 	StringMap effect = view_as<StringMap>(g_effects.Get(effect_i));
 	
-	float end;
-	ConVar cvar;
-	effect.GetValue("end", end);
-	effect.GetValue("cvar", cvar);
-	cvar.SetFloat(end);
+	char buffer[255];
+	effect.GetString("end", buffer, sizeof(buffer));
+	ServerCommand(buffer);
 	
-	char effect_name[255];
-	effect.GetString("name", effect_name, sizeof(effect_name));
-	PrintToChatAll("Effect %s ended.", effect_name);
-	
-	char cvar_name[255];
-	cvar.GetName(cvar_name, sizeof(cvar_name));
-	g_effect_active_timers.Remove(cvar_name);
+	effect.GetString("name", buffer, sizeof(buffer));
+	PrintToChatAll("Effect %s ended.", buffer);
 }
