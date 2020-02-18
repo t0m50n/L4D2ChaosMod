@@ -28,6 +28,8 @@ Handle g_effect_timer;
 ConVar g_time_between_effects;
 ConVar g_enabled;
 
+ArrayList g_active_effects;
+
 public void OnPluginStart()
 {
 	CreateConVar("chaosmod_version", PLUGIN_VERSION, " Version of Chaos Mod on this server ", FCVAR_SPONLY|FCVAR_DONTRECORD);
@@ -41,7 +43,9 @@ public void OnPluginStart()
 	HookEvent("server_cvar", Event_Cvar, EventHookMode_Pre);
 	
 	LoadEffects();
+	g_active_effects = new ArrayList();
 	StartEffectTimer();
+	CreateTimer(1.0, Timer_UpdatePanel, _, TIMER_REPEAT);
 }
 
 void StartEffectTimer()
@@ -124,6 +128,11 @@ public void OnCvarEnabledChanged(ConVar convar, char[] oldValue, char[] newValue
 	}
 }
 
+public int Panel_DoNothing(Menu menu, MenuAction action, int param1, int param2)
+{
+	
+}
+
 public Action Timer_StartRandomEffect(Handle timer)
 {
 	int random_effect_i = GetRandomInt(0, g_effects.Length - 1);
@@ -140,6 +149,11 @@ public Action Timer_StartRandomEffect(Handle timer)
 	float value;
 	random_effect.GetValue("active_time", value);
 	CreateTimer(value, Timer_StopEffect, random_effect_i);
+	
+	StringMap active_effect = new StringMap();
+	active_effect.SetValue("time_left", RoundToFloor(value));
+	active_effect.SetString("effect_name", effect_name);
+	g_active_effects.Push(active_effect);
 }
 
 public Action Timer_StopEffect(Handle timer, any effect_i)
@@ -152,4 +166,45 @@ public Action Timer_StopEffect(Handle timer, any effect_i)
 	
 	effect.GetString("name", buffer, sizeof(buffer));
 	PrintToChatAll("Effect %s ended.", buffer);
+}
+
+public Action Timer_UpdatePanel(Handle timer, any unused)
+{
+	Panel p = new Panel();
+	p.SetTitle("Chaos Mod");
+	p.DrawText("Effect Name:\t\tTime Left:");
+	
+	for (int i = g_active_effects.Length - 1; i >= 0; i--)
+	{ 
+		StringMap active_effect = view_as<StringMap>(g_active_effects.Get(i));
+		
+		int time_left;
+		active_effect.GetValue("time_left", time_left);
+		
+		char effect_name[255];
+		active_effect.GetString("effect_name", effect_name, sizeof(effect_name));
+		
+		char panel_text[255];
+		Format(panel_text, sizeof(panel_text), "%s\t\t%d", effect_name, time_left);
+		p.DrawText(panel_text);
+		
+		time_left--;
+		if (time_left == 0)
+		{
+			g_active_effects.Erase(i);
+			CloseHandle(active_effect);
+			continue;
+		}
+		active_effect.SetValue("time_left", time_left);
+	}
+	
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (IsClientInGame(i))
+		{
+			p.Send(i, Panel_DoNothing, 5);
+		}
+	}
+	
+	CloseHandle(p);
 }
