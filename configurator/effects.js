@@ -1,15 +1,30 @@
-let effects = {
-	"text": "Root node 2",
+let effects_tree = {
+	"text": "All",
 	"state": {
 		"opened": true,
-		"selected": true
+		"checked": true
 	},
 	"children": [
 		{
-			"text": "Child 1"
-		},
-		{
-			"text": "Child 1"
+			"text": "Global",
+			"state": {
+				"opened": true
+			},
+			"children": [
+				{
+					"text": "Half Gravity",
+					"start": "sm_cvar sv_gravity 400",
+					"end": "sm_cvar sv_gravity 800",
+					"active_time": "normal"
+				},
+				{
+					"text": "Double Gravity",
+					"start": "sm_cvar sv_gravity 1600",
+					"end": "sm_cvar sv_gravity 800",
+					"active_time": "normal"
+				}
+			]
 		}
 	]
 }
+
