@@ -6,73 +6,42 @@
 	<title>Configurator</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="jstree/themes/default/style.css" />
+	<style>
+		.error {
+			color: red;
+		}
+		
+		section {
+			display: flex;
+			justify-content: space-evenly;
+		}
+		
+		section > #input {
+			flex-basis: 100%
+		}
+		
+		#tree {
+			margin-right: 2em;
+		}
+		
+		#input {
+			padding: 2em;
+			height: 100em;
+		}
+	</style>
 </head>
 
 <body>
-	<p>Hello world! This is HTML5 Boilerplate.</p>
-	<div id="tree"></div>
-	<textarea id="input" rows="30" cols="50">
-	</textarea>
+	<h1>Configurator</h1>
+	<section>
+		<div id="tree"></div>
+		<textarea id="input"></textarea>
+	</section>
 	<script src="jquery/jquery-3.4.1.js"></script>
 	<script src="jstree/jstree.js"></script>
 	<script src="effects.js"></script>
 	<script src="vdfplus.web.js"></script>
-	<script>
-	let disable_tree_event = false
-	$('#tree').jstree({
-		"core" : {
-			"data" : effects_tree
-		},
-		"checkbox": {
-			"tie_selection": false
-		},
-		"plugins": ["checkbox"]
-	});
-	$('#tree').on('ready.jstree check_node.jstree uncheck_node.jstree', () => {
-		if (disable_tree_event) {
-			return
-		}
-		let tree = $.jstree.reference('#tree')
-		let checked = $.jstree.reference('#tree').get_checked()
-		checked = checked.filter(id => tree.get_node(id).original.start !== undefined)
-		
-		let effects = checked.map(id => tree.get_node(id).original)
-		effects = effects.reduce((obj, item) => {
-			item_copy = JSON.parse(JSON.stringify(item))
-			delete item_copy.text
-			obj[item.text] = item_copy
-			return obj
-		}, {})
-		effects = {"effects": effects}
-		effects = VDF.stringify(effects)
-		$('#input').val(effects)
-	})
-	$("#input").on('input', (e) => {
-		let effects
-		try {
-			effects = VDF.parse(e.target.value)
-		}
-		catch (e) {
-			console.log('Bad input bro')
-			return
-		}
-		effects = effects.effects
-		/*
-		effects = Object.keys(effects).map(key => {
-			item = effects[key]
-			item.text = key
-			return item
-		})
-		*/
-		let tree = $.jstree.reference('#tree')
-		let nodes = tree.get_json(undefined,{flat:true})
-		nodes = nodes.filter(n => effects[n.text] !== undefined)
-		disable_tree_event = true
-		tree.uncheck_all()
-		nodes.forEach(n => tree.check_node(n.id))
-		disable_tree_event = false
-	})
-	</script>
+	<script src="index.js"></script>
 </body>
 
 </html>
