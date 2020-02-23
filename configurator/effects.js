@@ -89,10 +89,16 @@ let effects_tree = {
 					
 				},
 				{
-					text:"Tough Zombies",
+					text: "Tough Zombies",
 					start:"sm_cvar z_health 400",
 					end:"sm_cvar z_health 50",
 					active_time: "long"
+				},
+				{
+					text: "Endless Hordes",
+					start: "exec sourcemod/chaosmod/endless_hordes_start",
+					end: "exec sourcemod/chaosmod/endless_hordes_end",
+					active_time: "normal"
 				}
 			]
 		}

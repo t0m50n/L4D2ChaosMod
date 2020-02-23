@@ -6,41 +6,23 @@
 	<title>Configurator</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="jstree/themes/default/style.css" />
-	<style>
-		.error {
-			color: red;
-		}
-		
-		section {
-			display: flex;
-			justify-content: space-evenly;
-		}
-		
-		section > #input {
-			flex-basis: 100%
-		}
-		
-		#tree {
-			margin-right: 2em;
-		}
-		
-		#input {
-			padding: 2em;
-			height: 100em;
-		}
-	</style>
+	<link rel="stylesheet" href="index.css" />
 </head>
 
 <body>
 	<h1>Configurator</h1>
 	<section>
 		<div id="tree"></div>
-		<textarea id="input"></textarea>
+		<div id="right">
+			<a id="save" href="#">Save to File</a>
+			<textarea id="input"></textarea>
+		</div>
 	</section>
 	<script src="jquery/jquery-3.4.1.js"></script>
 	<script src="jstree/jstree.js"></script>
 	<script src="effects.js"></script>
 	<script src="vdfplus.web.js"></script>
+	<script src="FileSaver.js"></script>
 	<script src="index.js"></script>
 </body>
 

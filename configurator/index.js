@@ -2,7 +2,8 @@ let disable_tree_event = false
 
 $('#tree').jstree({
 	core : {
-		data : effects_tree
+		data : effects_tree,
+		dblclick_toggle: false
 	},
 	checkbox: {
 		tie_selection: false
@@ -44,7 +45,7 @@ $('#tree').on('ready.jstree check_node.jstree uncheck_node.jstree', () => {
 	$('#input').removeClass('error')
 })
 
-$("#input").on('input', (event) => {
+$('#input').on('input', (event) => {
 	let effects
 	try {
 		effects = VDF.parse(event.target.value)
@@ -75,4 +76,9 @@ $("#input").on('input', (event) => {
 	disable_tree_event = false
 	
 	$(event.target).removeClass('error')
+})
+
+$('#save').click((e) => {
+	e.target.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent($('#input').val())
+	e.target.download = 'effects.cfg';
 })

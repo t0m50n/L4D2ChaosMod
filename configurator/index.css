@@ -1,0 +1,27 @@
+.error {
+	color: red;
+}
+
+section {
+	display: flex;
+	justify-content: space-evenly;
+}
+
+#right {
+	flex-basis: 100%
+}
+
+#tree {
+	margin-right: 2em;
+}
+
+#input {
+	padding: 2em;
+	height: 100em;
+	width: 100%;
+}
+
+#save {
+	display: block;
+    margin-bottom: 1em;
+}
