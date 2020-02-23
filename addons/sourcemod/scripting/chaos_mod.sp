@@ -32,6 +32,11 @@ Handle g_panel_timer;
 
 ConVar g_time_between_effects;
 ConVar g_enabled;
+ConVar g_short_time_duration;
+ConVar g_normal_time_duration;
+ConVar g_long_time_duration;
+
+StringMap g_effect_durations;
 
 public void OnPluginStart()
 {
@@ -43,11 +48,22 @@ public void OnPluginStart()
 	g_time_between_effects = CreateConVar("chaosmod_time_between_effects", "30", "How long to wait in seconds between activating effects", FCVAR_NOTIFY, true, 0.1);
 	g_time_between_effects.AddChangeHook(OnCvarTimeBetweenEffectsChanged);
 	
+	g_short_time_duration = CreateConVar("chaosmod_short_time_duration", "15", "Time in seconds a short effect should be enabled for", FCVAR_NOTIFY, true, 0.1);
+	g_normal_time_duration = CreateConVar("chaosmod_normal_time_duration", "30", "Time in seconds a normal effect should be enabled for", FCVAR_NOTIFY, true, 0.1);
+	g_long_time_duration = CreateConVar("chaosmod_long_time_duration", "60", "Time in seconds a long effect should be enabled for", FCVAR_NOTIFY, true, 0.1);
+	
+	g_effect_durations = new StringMap();
+	g_effect_durations.SetValue("short", g_short_time_duration);
+	g_effect_durations.SetValue("normal", g_normal_time_duration);
+	g_effect_durations.SetValue("long", g_long_time_duration);
+	
 	HookEvent("server_cvar", Event_Cvar, EventHookMode_Pre);
 	
 	LoadEffects();
 	g_active_effects = new ArrayList();
 	StartStopGlobalTimers(true);
+	
+	AutoExecConfig(true);
 }
 
 void StartStopGlobalTimers(bool start)
@@ -87,6 +103,7 @@ void LoadEffects()
 		StringMap effect = new StringMap();
 		char buffer[255];
 		
+		
 		kv.GetSectionName(buffer, sizeof(buffer));
 		effect.SetString("name", buffer);
 		
@@ -96,7 +113,10 @@ void LoadEffects()
 		kv.GetString("end", buffer, sizeof(buffer));
 		effect.SetString("end", buffer);
 		
-		effect.SetValue("active_time", kv.GetFloat("active_time"));
+		kv.GetString("active_time", buffer, sizeof(buffer));
+		// Throw error early if any effects have invalid active time
+		ParseActiveTime(buffer);
+		effect.SetString("active_time", buffer);
 		
 		g_effects.Push(effect);
 	} while (kv.GotoNextKey());
@@ -156,14 +176,41 @@ public Action Timer_StartRandomEffect(Handle timer)
 	}
 
 	{
-		float active_time;
-		random_effect.GetValue("active_time", active_time);
-		active_effect.SetValue("time_left", RoundToFloor(active_time));
-		CreateTimer(active_time, Timer_StopEffect, random_effect_i);
+		char active_time[255];
+		float f_active_time;
+		random_effect.GetString("active_time", active_time, sizeof(active_time));	
+		f_active_time = ParseActiveTime(active_time);
+		active_effect.SetValue("time_left", RoundToFloor(f_active_time));
+		CreateTimer(f_active_time, Timer_StopEffect, random_effect_i);
 	}
 	
 	g_active_effects.Push(active_effect);
 	g_new_effect_activated = true;
+}
+
+float ParseActiveTime(char[] active_time)
+{
+	StringMapSnapshot durations = g_effect_durations.Snapshot();
+	for (int i = 0; i < durations.Length; i++)
+	{
+		char duration_name[255];
+		durations.GetKey(i, duration_name, sizeof(duration_name));
+		if (StrEqual(active_time, duration_name))
+		{
+			CloseHandle(durations);
+			ConVar c;
+			g_effect_durations.GetValue(duration_name, c);
+			return c.FloatValue;
+		}
+	}
+	CloseHandle(durations);
+	
+	float f = StringToFloat(active_time);
+	if (f < 0.01)
+	{
+		SetFailState("Invalid effect active time");
+	}
+	return f;
 }
 
 public Action Timer_StopEffect(Handle timer, any effect_i)
@@ -213,6 +260,7 @@ public Action Timer_UpdatePanel(Handle timer, any unused)
 		
 		int time_left;
 		active_effect.GetValue("time_left", time_left);
+		
 		
 		char effect_name[255];
 		active_effect.GetString("effect_name", effect_name, sizeof(effect_name));
