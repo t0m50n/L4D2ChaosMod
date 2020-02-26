@@ -34,6 +34,12 @@ let effects_tree = {
 					start: "sm_cvar sv_gravity 0",
 					end: "sm_cvar sv_gravity 800",
 					active_time: "short"
+				},
+				{
+					text: "Shuffle names",
+					start: "sm_rename @all",
+					end: "",
+					active_time: "none"
 				}
 			]
 		},
@@ -63,9 +69,27 @@ let effects_tree = {
 				},
 				{
 					text: "Freeze survivors",
-					start: "sm_freeze @survivors 15",
+					start: "sm_freeze @survivors 10",
 					end: "",
-					active_time: "15"
+					active_time: "10"
+				},
+				{
+					text: "Blind",
+					start: "sm_blind @survivors 255",
+					end: "sm_blind @survivors 0",
+					active_time: "short"
+				},
+				{
+					text: "Half Blind",
+					start: "sm_blind @survivors 210",
+					end: "sm_blind @survivors 0",
+					active_time: "short"
+				},
+				{
+					text: "Too many pills",
+					start: "sm_drug @survivors 1",
+					end: "sm_drug @survivors 0",
+					active_time: "normal"
 				}
 			]
 		},
