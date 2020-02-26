@@ -60,6 +60,12 @@ let effects_tree = {
 					start: "sm_cvar sb_open_fire 1",
 					end: "sm_cvar sb_open_fire 0",
 					active_time: "normal"
+				},
+				{
+					text: "Freeze survivors",
+					start: "sm_freeze @survivors 15",
+					end: "",
+					active_time: "15"
 				}
 			]
 		},
