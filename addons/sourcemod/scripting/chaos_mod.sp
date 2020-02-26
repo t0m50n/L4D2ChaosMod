@@ -110,7 +110,7 @@ public Action Command_Start_Effect(int client, int args)
 		StringMap effect = view_as<StringMap>(g_effects.Get(i));
 		char name_other[255];
 		effect.GetString("name", name_other, sizeof(name_other));
-		if (StrEqual(name, name_other))
+		if (StrEqual(name, name_other, false))
 		{
 			StartEffect(effect);
 			return Plugin_Handled;
@@ -137,6 +137,7 @@ void StartEffect(StringMap effect)
 	effect.GetString("active_time", buffer, sizeof(buffer));
 	f_active_time = Effects_ParseActiveTime(buffer);
 	active_effect.SetValue("time_left", RoundToFloor(f_active_time));
+	active_effect.SetValue("is_timed_effect", !StrEqual(buffer, "none", false));
 	
 	CreateTimer(f_active_time, Timer_StopEffect, effect);
 	g_active_effects.Push(active_effect);
@@ -208,7 +209,16 @@ public Action Timer_UpdatePanel(Handle timer, any unused)
 		active_effect.GetString("effect_name", effect_name, sizeof(effect_name));
 		
 		char panel_text[255];
-		Format(panel_text, sizeof(panel_text), "%s (%d)", effect_name, time_left);
+		bool is_timed_effect;
+		active_effect.GetValue("is_timed_effect", is_timed_effect);
+		if (is_timed_effect)
+		{
+			Format(panel_text, sizeof(panel_text), "%s (%d)", effect_name, time_left);
+		}	
+		else
+		{
+			Format(panel_text, sizeof(panel_text), "%s", effect_name);
+		}
 		p.DrawText(panel_text);
 		
 		if (time_left == 1)

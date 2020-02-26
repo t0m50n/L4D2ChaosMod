@@ -6,11 +6,12 @@ static ConVar g_long_time_duration;
 
 void Effects_Initialise()
 {
-	g_short_time_duration = CreateConVar("chaosmod_short_time_duration", "15", "Time in seconds a short effect should be enabled for", FCVAR_NOTIFY, true, 0.1);
-	g_normal_time_duration = CreateConVar("chaosmod_normal_time_duration", "30", "Time in seconds a normal effect should be enabled for", FCVAR_NOTIFY, true, 0.1);
-	g_long_time_duration = CreateConVar("chaosmod_long_time_duration", "60", "Time in seconds a long effect should be enabled for", FCVAR_NOTIFY, true, 0.1);
+	g_short_time_duration = CreateConVar("chaosmod_short_time_duration", "15", "A short effect will be enabled for this many seconds", FCVAR_NOTIFY, true, 0.1);
+	g_normal_time_duration = CreateConVar("chaosmod_normal_time_duration", "30", "A normal effect will be enabled for this many seconds", FCVAR_NOTIFY, true, 0.1);
+	g_long_time_duration = CreateConVar("chaosmod_long_time_duration", "60", "A long effect will be enabled for this many seconds", FCVAR_NOTIFY, true, 0.1);
 	
 	g_effect_durations = new StringMap();
+	g_effect_durations.SetValue("none", g_normal_time_duration);
 	g_effect_durations.SetValue("short", g_short_time_duration);
 	g_effect_durations.SetValue("normal", g_normal_time_duration);
 	g_effect_durations.SetValue("long", g_long_time_duration);
@@ -54,7 +55,8 @@ ArrayList Effects_Load(const char[] path)
 		float active_time = Effects_ParseActiveTime(buffer);
 		if (active_time < 0)
 		{
-			SetFailState("Invalid effect active time");
+			effect.GetString("name", buffer, sizeof(buffer));
+			SetFailState("Invalid active time for effect: %s", buffer);
 		}
 		effect.SetString("active_time", buffer);
 		
@@ -83,7 +85,7 @@ float Effects_ParseActiveTime(char[] active_time)
 	{
 		char duration_name[255];
 		durations.GetKey(i, duration_name, sizeof(duration_name));
-		if (StrEqual(active_time, duration_name))
+		if (StrEqual(active_time, duration_name, false))
 		{
 			CloseHandle(durations);
 			ConVar c;
