@@ -28,8 +28,8 @@ public Plugin myinfo =
 ArrayList g_effects;
 ArrayList g_active_effects;
 
-Handle g_effect_timer;
-Handle g_panel_timer;
+Handle g_effect_timer = INVALID_HANDLE;
+Handle g_panel_timer = INVALID_HANDLE;
 
 ConVar g_time_between_effects;
 ConVar g_enabled;
@@ -37,9 +37,7 @@ ConVar g_enabled;
 public void OnPluginStart()
 {
 	CreateConVar("chaosmod_version", PLUGIN_VERSION, " Version of Chaos Mod on this server ", FCVAR_SPONLY|FCVAR_DONTRECORD);
-	
 	g_enabled = CreateConVar("chaosmod_enabled", "1", "Enable/Disable Chaos Mod", FCVAR_NOTIFY);
-	
 	g_time_between_effects = CreateConVar("chaosmod_time_between_effects", "30", "How long to wait in seconds between activating effects", FCVAR_NOTIFY, true, 0.1);
 	
 	Effects_Initialise();
@@ -73,13 +71,20 @@ void StartStopGlobalTimers(bool start)
 
 public Action Event_Cvar(Event event, const char[] name, bool dontBroadcast)
 {
-	// event.BroadcastDisabled = true;
+	if (!g_enabled.BoolValue)
+	{
+		return Plugin_Continue;
+	}
 	
 	return Plugin_Handled;
 }
 
 public void Cvar_TimeBetweenEffectsChanged(ConVar convar, char[] oldValue, char[] newValue)
 {
+	if (!g_enabled.BoolValue)
+	{
+		return;
+	}
 	StartStopGlobalTimers(false);
 	StartStopGlobalTimers(true);
 }
@@ -89,16 +94,13 @@ public void Cvar_EnabledChanged(ConVar convar, char[] oldValue, char[] newValue)
 	StartStopGlobalTimers(convar.BoolValue);
 }
 
-public int Panel_DoNothing(Menu menu, MenuAction action, int param1, int param2)
-{
-	
-}
+public int Panel_DoNothing(Menu menu, MenuAction action, int param1, int param2) {}
 
 public Action Command_Start_Effect(int client, int args)
 {
 	if (args < 1)
 	{
-		PrintToConsole(client, "Usage: chaosmod_effect <effect_name>");
+		ReplyToCommand(client, "Usage: chaosmod_effect <effect_name>");
 		return Plugin_Handled;
 	}
  

@@ -40,6 +40,12 @@ let effects_tree = {
 					start: "sm_rename @all",
 					end: "",
 					active_time: "none"
+				},
+				{
+					text: "Throw everyone",
+					start: "sm_charge @all 600",
+					end: "",
+					active_time: "none"
 				}
 			]
 		},
@@ -83,7 +89,7 @@ let effects_tree = {
 					text: "Half Blind",
 					start: "sm_blind @survivors 210",
 					end: "sm_blind @survivors 0",
-					active_time: "short"
+					active_time: "normal"
 				},
 				{
 					text: "Too many pills",

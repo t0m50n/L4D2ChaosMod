@@ -1,8 +1,15 @@
+#define ANIM_CHARGER_BOUNCE 76
+#define CHARGE_INCAP_TIME 3.0
+
 static StringMap g_effect_durations;
 
 static ConVar g_short_time_duration;
 static ConVar g_normal_time_duration;
 static ConVar g_long_time_duration;
+
+
+static Handle g_game_conf = INVALID_HANDLE;
+static Handle g_sdk_push_player = INVALID_HANDLE;
 
 void Effects_Initialise()
 {
@@ -15,6 +22,26 @@ void Effects_Initialise()
 	g_effect_durations.SetValue("short", g_short_time_duration);
 	g_effect_durations.SetValue("normal", g_normal_time_duration);
 	g_effect_durations.SetValue("long", g_long_time_duration);
+	
+	RegAdminCmd("sm_charge", Command_Charge, ADMFLAG_GENERIC, "Will launch a survivor far away");
+	
+	g_game_conf = LoadGameConfigFile("l4d2_custom_commands");
+	if(g_game_conf == INVALID_HANDLE)
+	{
+		SetFailState("Couldn't find the offsets and signatures file. Please, check that it is installed correctly.");
+	}
+	
+	StartPrepSDKCall(SDKCall_Player);
+	PrepSDKCall_SetFromConf(g_game_conf, SDKConf_Signature, "CTerrorPlayer_Fling");
+	PrepSDKCall_AddParameter(SDKType_Vector, SDKPass_ByRef);
+	PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+	PrepSDKCall_AddParameter(SDKType_CBasePlayer, SDKPass_Pointer);
+	PrepSDKCall_AddParameter(SDKType_Float, SDKPass_Plain);
+	g_sdk_push_player = EndPrepSDKCall();
+	if(g_sdk_push_player == INVALID_HANDLE)
+	{
+		SetFailState("Unable to find the \"CTerrorPlayer_Fling\" signature, check the file version!");
+	}
 }
 
 ArrayList Effects_Load(const char[] path)
@@ -23,6 +50,8 @@ ArrayList Effects_Load(const char[] path)
 	BuildPath(Path_SM, effects_path, sizeof(effects_path), path);
 	
 	KeyValues kv = new KeyValues("effects");
+	kv.SetEscapeSequences(true);
+	
 	if (!kv.ImportFromFile(effects_path))
 	{
 		delete kv;
@@ -101,4 +130,76 @@ float Effects_ParseActiveTime(char[] active_time)
 		return -1.0;
 	}
 	return f;
+}
+
+public Action Command_Charge(int client, int args)
+{
+	if(args < 2)
+	{
+		ReplyToCommand(client, "[SM] Usage: sm_charge <#userid|name> <velocity>");
+		return Plugin_Handled;
+	}
+	
+	char target_string[255];
+	int target_list[MAXPLAYERS];
+	char target_name[MAX_TARGET_LENGTH];
+	bool tn_is_ml;
+	
+	GetCmdArg(1, target_string, sizeof(target_string));
+	int target_count = ProcessTargetString(
+			target_string,
+			client,
+			target_list,
+			MAXPLAYERS,
+			COMMAND_FILTER_ALIVE,
+			target_name,
+			sizeof(target_name),
+			tn_is_ml);
+	
+	if (target_count < 1)
+	{
+		ReplyToTargetError(client, target_count);
+		return Plugin_Handled;
+	}
+	
+	char s_velocity[255];
+	GetCmdArg(2, s_velocity, sizeof(s_velocity));
+	float f_velocity = StringToFloat(s_velocity);
+	
+	for (new i = 0; i < target_count; i++)
+	{
+		Charge(target_list[i], f_velocity);
+	}
+	
+	return Plugin_Handled;
+}
+
+Charge(int target, float velocity)
+{
+	float tpos[3];
+	float spos[3];
+	
+	float distance[3];
+	float ratio[3];
+	float addVel[3];
+	float tvec[3];
+	
+	GetClientAbsOrigin(target, tpos);
+	
+	// Throw in random direction
+	spos[0] = tpos[0] + GetRandomFloat(-1.0, 1.0);
+	spos[1] = tpos[1] + GetRandomFloat(-1.0, 1.0);
+	spos[2] = tpos[2] + GetRandomFloat(-1.0, 1.0);
+	
+	distance[0] = (spos[0] - tpos[0]);
+	distance[1] = (spos[1] - tpos[1]);
+	distance[2] = (spos[2] - tpos[2]);
+	GetEntPropVector(target, Prop_Data, "m_vecVelocity", tvec);
+	ratio[0] =  FloatDiv(distance[0], SquareRoot(distance[1]*distance[1] + distance[0]*distance[0])); // Ratio x/hypo
+	ratio[1] =  FloatDiv(distance[1], SquareRoot(distance[1]*distance[1] + distance[0]*distance[0])); // Ratio y/hypo
+	
+	addVel[0] = FloatMul(ratio[0]*-1, velocity);
+	addVel[1] = FloatMul(ratio[1]*-1, velocity);
+	addVel[2] = velocity;
+	SDKCall(g_sdk_push_player, target, addVel, ANIM_CHARGER_BOUNCE, target, CHARGE_INCAP_TIME);
 }
