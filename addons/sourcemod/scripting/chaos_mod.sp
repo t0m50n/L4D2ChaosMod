@@ -44,6 +44,8 @@ public void OnPluginStart()
 	
 	RegAdminCmd("chaosmod_effect", Command_Start_Effect, ADMFLAG_GENERIC, "Activates a specific effect");
 	
+	LoadTranslations("common.phrases.txt");
+	
 	HookEvent("server_cvar", Event_Cvar, EventHookMode_Pre);
 	
 	g_active_effects = new ArrayList();
@@ -119,7 +121,7 @@ public Action Command_Start_Effect(int client, int args)
 		}
 	}
 	
-	PrintToConsole(client, "effect not found");
+	ReplyToCommand(client, "Effect not found");
  
 	return Plugin_Handled;
 }
@@ -177,7 +179,7 @@ public Action Timer_UpdatePanel(Handle timer, any unused)
 	p.SetTitle("Chaos Mod");
 	
 	{
-		char next_effect_pbar[255];
+		char next_effect_pbar[P_BAR_LENGTH + 1];
 		next_effect_pbar[P_BAR_LENGTH] = 0;
 		int pbar_fullness = RoundToFloor((time_until_next_effect / g_time_between_effects.FloatValue) * P_BAR_LENGTH);
 		for (int i = 0; i < P_BAR_LENGTH; i++)

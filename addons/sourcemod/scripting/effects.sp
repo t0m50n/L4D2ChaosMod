@@ -1,15 +1,17 @@
 #define ANIM_CHARGER_BOUNCE 76
 #define CHARGE_INCAP_TIME 3.0
 
-static StringMap g_effect_durations;
+StringMap g_effect_durations;
 
-static ConVar g_short_time_duration;
-static ConVar g_normal_time_duration;
-static ConVar g_long_time_duration;
+ConVar g_short_time_duration;
+ConVar g_normal_time_duration;
+ConVar g_long_time_duration;
 
+Handle g_game_conf = INVALID_HANDLE;
+Handle g_sdk_push_player = INVALID_HANDLE;
 
-static Handle g_game_conf = INVALID_HANDLE;
-static Handle g_sdk_push_player = INVALID_HANDLE;
+float g_dontrush_tele_pos[3];
+bool g_dontrush_supported;
 
 void Effects_Initialise()
 {
@@ -24,6 +26,7 @@ void Effects_Initialise()
 	g_effect_durations.SetValue("long", g_long_time_duration);
 	
 	RegAdminCmd("sm_charge", Command_Charge, ADMFLAG_GENERIC, "Will launch a survivor far away");
+	RegAdminCmd("sm_dontrush", Command_DontRush, ADMFLAG_GENERIC, "Forces a player to re-appear in the starting safe zone");
 	
 	g_game_conf = LoadGameConfigFile("l4d2_custom_commands");
 	if(g_game_conf == INVALID_HANDLE)
@@ -132,16 +135,15 @@ float Effects_ParseActiveTime(char[] active_time)
 	return f;
 }
 
-public Action Command_Charge(int client, int args)
+int CommandHandler(int client, int args, const char[] usage, int no_args, int[] target_list, int max_targets)
 {
-	if(args < 2)
+	if(args < no_args)
 	{
-		ReplyToCommand(client, "[SM] Usage: sm_charge <#userid|name> <velocity>");
-		return Plugin_Handled;
+		ReplyToCommand(client, usage);
+		return -1;
 	}
 	
 	char target_string[255];
-	int target_list[MAXPLAYERS];
 	char target_name[MAX_TARGET_LENGTH];
 	bool tn_is_ml;
 	
@@ -150,7 +152,7 @@ public Action Command_Charge(int client, int args)
 			target_string,
 			client,
 			target_list,
-			MAXPLAYERS,
+			max_targets,
 			COMMAND_FILTER_ALIVE,
 			target_name,
 			sizeof(target_name),
@@ -159,6 +161,22 @@ public Action Command_Charge(int client, int args)
 	if (target_count < 1)
 	{
 		ReplyToTargetError(client, target_count);
+		return -1;
+	}
+	
+	return target_count;
+}
+
+public Action Command_Charge(int client, int args)
+{
+	int target_list[MAXPLAYERS];
+			
+	int target_count = CommandHandler(
+			client, args, "[SM] Usage: sm_charge <#userid|name> <velocity>",
+			2, target_list, MAXPLAYERS);
+	
+	if (target_count < 0)
+	{
 		return Plugin_Handled;
 	}
 	
@@ -174,7 +192,62 @@ public Action Command_Charge(int client, int args)
 	return Plugin_Handled;
 }
 
-Charge(int target, float velocity)
+public Action Command_DontRush(int client, int args)
+{
+	int target_list[MAXPLAYERS];
+			
+	int target_count = CommandHandler(
+			client, args, "[SM] Usage: sm_dontrush <#userid|name>",
+			1, target_list, MAXPLAYERS);
+	
+	if (target_count < 0)
+	{
+		return Plugin_Handled;
+	}
+	
+	for (int i = 0; i < target_count; i++)
+	{
+		TeleportBack(target_list[i], client);
+	}
+	
+	return Plugin_Handled;
+}
+
+public void OnMapStart()
+{
+	g_dontrush_supported = true;
+	int tel_ent = -1;
+	
+	do
+	{
+		tel_ent = FindEntityByClassname(tel_ent, "prop_door_rotating_checkpoint");
+	} while (tel_ent >= 0 && GetEntProp(tel_ent, Prop_Send, "m_bLocked") != 1);
+	
+	if (tel_ent >= 0)
+	{
+		float door_ent_pos[3];
+		GetEntPropVector(tel_ent, Prop_Send, "m_vecOrigin", door_ent_pos);
+		
+		float door_ent_ang[3];
+		GetEntPropVector(tel_ent, Prop_Data, "m_angAbsRotation", door_ent_ang);
+		
+		g_dontrush_tele_pos[0] = door_ent_pos[0] + 50.0 * Cosine(DegToRad(door_ent_ang[1]));
+		g_dontrush_tele_pos[1] = door_ent_pos[1] + 50.0 * Sine(DegToRad(door_ent_ang[1]));
+		g_dontrush_tele_pos[2] = door_ent_pos[2] - 25.0;
+		return;
+	}
+	
+	tel_ent = FindEntityByClassname(-1, "info_survivor_position");	
+	if (tel_ent >= 0)
+	{
+		GetEntPropVector(tel_ent, Prop_Send, "m_vecOrigin", g_dontrush_tele_pos);
+		return;	
+	}
+	
+	g_dontrush_supported = false;
+}
+
+void Charge(int target, float velocity)
 {
 	float tpos[3];
 	float spos[3];
@@ -202,4 +275,21 @@ Charge(int target, float velocity)
 	addVel[1] = FloatMul(ratio[1]*-1, velocity);
 	addVel[2] = velocity;
 	SDKCall(g_sdk_push_player, target, addVel, ANIM_CHARGER_BOUNCE, target, CHARGE_INCAP_TIME);
+}
+
+void TeleportBack(target, sender)
+{
+	if (!IsClientInGame(target) ||
+		!IsPlayerAlive(target) ||
+		GetClientTeam(target) == 1)
+	{
+		return;
+	}
+	
+	if (!g_dontrush_supported)
+	{
+		ReplyToCommand(sender, "Map not supported %b", g_dontrush_supported);
+	}
+	
+	TeleportEntity(target, g_dontrush_tele_pos, NULL_VECTOR, NULL_VECTOR);
 }

@@ -96,6 +96,12 @@ let effects_tree = {
 					start: "sm_drug @survivors 1",
 					end: "sm_drug @survivors 0",
 					active_time: "normal"
+				},
+				{
+					text: "Teleport back to saferoom",
+					start: "sm_dontrush @survivors",
+					end: "",
+					active_time: "none"
 				}
 			]
 		},
