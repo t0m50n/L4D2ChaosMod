@@ -1,4 +1,5 @@
 #pragma semicolon 1
+#pragma newdecls required
 
 #define DEBUG
 
@@ -7,10 +8,6 @@
 
 #include <sourcemod>
 #include <sdktools>
-
-#include "effects.sp"
-
-#pragma newdecls required
 
 public Plugin myinfo = 
 {
@@ -27,34 +24,46 @@ public Plugin myinfo =
 
 ArrayList g_effects;
 ArrayList g_active_effects;
+StringMap g_effect_durations;
 
 Handle g_effect_timer = INVALID_HANDLE;
 Handle g_panel_timer = INVALID_HANDLE;
 
-ConVar g_time_between_effects;
 ConVar g_enabled;
+ConVar g_time_between_effects;
+ConVar g_short_time_duration;
+ConVar g_normal_time_duration;
+ConVar g_long_time_duration;
+
+#include "parse.sp"
 
 public void OnPluginStart()
 {
 	CreateConVar("chaosmod_version", PLUGIN_VERSION, " Version of Chaos Mod on this server ", FCVAR_SPONLY|FCVAR_DONTRECORD);
 	g_enabled = CreateConVar("chaosmod_enabled", "1", "Enable/Disable Chaos Mod", FCVAR_NOTIFY);
 	g_time_between_effects = CreateConVar("chaosmod_time_between_effects", "30", "How long to wait in seconds between activating effects", FCVAR_NOTIFY, true, 0.1);
-	
-	Effects_Initialise();
-	
-	RegAdminCmd("chaosmod_effect", Command_Start_Effect, ADMFLAG_GENERIC, "Activates a specific effect");
-	
-	LoadTranslations("common.phrases.txt");
-	
-	HookEvent("server_cvar", Event_Cvar, EventHookMode_Pre);
-	
-	g_active_effects = new ArrayList();
-	g_effects = Effects_Load(EFFECTS_PATH);
+	g_short_time_duration = CreateConVar("chaosmod_short_time_duration", "15", "A short effect will be enabled for this many seconds", FCVAR_NOTIFY, true, 0.1);
+	g_normal_time_duration = CreateConVar("chaosmod_normal_time_duration", "30", "A normal effect will be enabled for this many seconds", FCVAR_NOTIFY, true, 0.1);
+	g_long_time_duration = CreateConVar("chaosmod_long_time_duration", "60", "A long effect will be enabled for this many seconds", FCVAR_NOTIFY, true, 0.1);
 	
 	g_enabled.AddChangeHook(Cvar_EnabledChanged);
 	g_time_between_effects.AddChangeHook(Cvar_TimeBetweenEffectsChanged);
 	
+	HookEvent("server_cvar", Event_Cvar, EventHookMode_Pre);
+	
+	g_active_effects = new ArrayList();
+	g_effect_durations = new StringMap();
+	g_effect_durations.SetValue("none", g_normal_time_duration);
+	g_effect_durations.SetValue("short", g_short_time_duration);
+	g_effect_durations.SetValue("normal", g_normal_time_duration);
+	g_effect_durations.SetValue("long", g_long_time_duration);
+	g_effects = Parse_KeyValueFile(EFFECTS_PATH);
+	
 	AutoExecConfig(true);
+	
+	#if defined DEBUG
+		RegAdminCmd("chaosmod_effect", Command_Start_Effect, ADMFLAG_GENERIC, "Activates a specific effect");
+	#endif
 }
 
 void StartStopGlobalTimers(bool start)
@@ -139,7 +148,7 @@ void StartEffect(StringMap effect)
 
 	float f_active_time;
 	effect.GetString("active_time", buffer, sizeof(buffer));
-	f_active_time = Effects_ParseActiveTime(buffer);
+	f_active_time = Parse_ActiveTime(buffer);
 	active_effect.SetValue("time_left", RoundToFloor(f_active_time));
 	active_effect.SetValue("is_timed_effect", !StrEqual(buffer, "none", false));
 	
