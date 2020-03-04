@@ -40,6 +40,11 @@ public void Effect_DontRush_OnMapStart()
 
 public Action Command_DontRush(int client, int args)
 {
+	if (!g_dontrush_supported)
+	{
+		ReplyToCommand(client, "[SM] dontrush: Map not supported.");
+	}
+	
 	int target_list[MAXPLAYERS];
 			
 	int target_count = CommandHandler(
@@ -51,21 +56,9 @@ public Action Command_DontRush(int client, int args)
 		return Plugin_Handled;
 	}
 	
-	if (!g_dontrush_supported)
-	{
-		ReplyToCommand(client, "[SM] dontrush: Map not supported.");
-	}
-	
 	for (int i = 0; i < target_count; i++)
 	{
 		int target = target_list[i];
-		if (!IsClientInGame(target) ||
-			!IsPlayerAlive(target) ||
-			GetClientTeam(target) == 1)
-		{
-			continue;
-		}
-	
 		TeleportEntity(target, g_dontrush_tele_pos, NULL_VECTOR, NULL_VECTOR);
 	}
 	
