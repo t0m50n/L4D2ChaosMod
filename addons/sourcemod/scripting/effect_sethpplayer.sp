@@ -3,7 +3,7 @@ public Action Command_SetHpPlayer(int client, int args)
 	int target_list[MAXPLAYERS];
 			
 	int target_count = CommandHandler(
-			client, args, "[SM] Usage: sm_sethpplayer <#userid|name> [amount]",
+			client, args, "[SM] Usage: sm_sethpplayer <#userid|name> <amount>",
 			2, target_list, MAXPLAYERS);
 	
 	if (target_count < 0)

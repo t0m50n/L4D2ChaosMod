@@ -34,8 +34,8 @@ public void OnPluginStart()
 	RegAdminCmd("sm_dontrush", Command_DontRush, ADMFLAG_GENERIC, "Forces a player to re-appear in the starting safe zone");
 	RegAdminCmd("sm_sethpplayer", Command_SetHpPlayer, ADMFLAG_GENERIC, "Set a player's health");
 	RegAdminCmd("sm_vomitplayer", Command_VomitPlayer, ADMFLAG_GENERIC, "Vomits the desired player");
-	// RegAdminCmd("sm_sizeplayer", Command_SizePlayer, ADMFLAG_GENERIC, "Resize a player's model (Most likely, their pants)");
-	
+	RegAdminCmd("sm_sizeplayer", Command_SizePlayer, ADMFLAG_GENERIC, "Resize a player's model (Most likely, their pants)");
+
 	LoadTranslations("common.phrases.txt");
 	
 	g_game_conf = LoadGameConfigFile("l4d2_custom_commands");
