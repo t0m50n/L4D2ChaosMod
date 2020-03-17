@@ -16,13 +16,13 @@ public Action Command_VomitPlayer(int client, int args)
 	
 	for (int i = 0; i < target_count; i++)
 	{
-		VomitPlayer(target_list[i]);
+		VomitPlayer(client, target_list[i]);
 	}
 	
 	return Plugin_Handled;
 }
 
-void VomitPlayer(int target)
+void VomitPlayer(int sender, int target)
 {
 	Handle sdk_call = INVALID_HANDLE;
 	
@@ -38,7 +38,7 @@ void VomitPlayer(int target)
 		}
 		default:
 		{
-			ReplyToCommand(client, "[SM] Spectators cannot be vomited!");
+			ReplyToCommand(sender, "[SM] Spectators cannot be vomited!");
 			return;
 		}
 	}

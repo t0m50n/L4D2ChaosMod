@@ -16,7 +16,7 @@ public Plugin myinfo =
 	url = "https://github.com/t0m50n/L4D2ChaosMod"
 };
 
-#define SDK_CALL_ERROR_MSG = "Unable to find the \"%s\" signature, check the gamedata file version!"
+char SDK_CALL_ERROR_MSG[] = "Unable to find the %s signature, check the gamedata file version!";
 
 Handle g_game_conf = INVALID_HANDLE;
 Handle g_sdk_push_player = INVALID_HANDLE;
@@ -34,6 +34,7 @@ public void OnPluginStart()
 	RegAdminCmd("sm_dontrush", Command_DontRush, ADMFLAG_GENERIC, "Forces a player to re-appear in the starting safe zone");
 	RegAdminCmd("sm_sethpplayer", Command_SetHpPlayer, ADMFLAG_GENERIC, "Set a player's health");
 	RegAdminCmd("sm_vomitplayer", Command_VomitPlayer, ADMFLAG_GENERIC, "Vomits the desired player");
+	// RegAdminCmd("sm_sizeplayer", Command_SizePlayer, ADMFLAG_GENERIC, "Resize a player's model (Most likely, their pants)");
 	
 	LoadTranslations("common.phrases.txt");
 	
@@ -56,7 +57,7 @@ public void OnPluginStart()
 	}
 	
 	StartPrepSDKCall(SDKCall_Player);
-	PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer_OnVomitedUpon");
+	PrepSDKCall_SetFromConf(g_game_conf, SDKConf_Signature, "CTerrorPlayer_OnVomitedUpon");
 	PrepSDKCall_AddParameter(SDKType_CBasePlayer, SDKPass_Pointer);
 	PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
 	g_sdk_vomit_survivor = EndPrepSDKCall();
