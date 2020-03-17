@@ -46,6 +46,12 @@ let effects_tree = {
 					start: "sm_charge @all 600",
 					end: "",
 					active_time: "none"
+				},
+				{
+					text: "Dissolve infected on death",
+					start: "sm_cvar l4d_dissolve_allow 1",
+					end: "sm_cvar l4d_dissolve_allow 0",
+					active_time: "normal"
 				}
 			]
 		},
@@ -102,6 +108,24 @@ let effects_tree = {
 					start: "sm_dontrush @survivors",
 					end: "",
 					active_time: "none"
+				},
+				{
+					text: "Big pants",
+					start: "sm_sizeplayer @survivors 4",
+					end: "sm_sizeplayer @survivors 1",
+					active_time: "normal"
+				},
+				{
+					text: "Vomit survivors",
+					start: "sm_vomitplayer @survivors",
+					end: "sm_vomitplayer @survivors",
+					active_time: "none"
+				},
+				{
+					text: "1 hp survivors",
+					start: "sm_sethpplayer @survivors 1",
+					end: "sm_sethpplayer @survivors 80",
+					active_time: "normal"
 				}
 			]
 		},

@@ -27,6 +27,7 @@ Handle g_sdk_vomit_infected = INVALID_HANDLE;
 #include "effect_dontrush.sp"
 #include "effect_sethpplayer.sp"
 #include "effect_vomitplayer.sp"
+#include "effect_sizeplayer.sp"
 
 public void OnPluginStart()
 {
