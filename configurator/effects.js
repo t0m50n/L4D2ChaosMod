@@ -52,6 +52,12 @@ let effects_tree = {
 					start: "sm_cvar l4d_dissolve_allow 1",
 					end: "sm_cvar l4d_dissolve_allow 0",
 					active_time: "normal"
+				},
+				{
+					text: "Raining gascans",
+					start: "sm_entityrain @all weapon_gascan",
+					end: "",
+					active_time: "none"
 				}
 			]
 		},
@@ -111,14 +117,14 @@ let effects_tree = {
 				},
 				{
 					text: "Big pants",
-					start: "sm_sizeplayer @survivors 4",
+					start: "sm_sizeplayer @survivors 2.5",
 					end: "sm_sizeplayer @survivors 1",
 					active_time: "normal"
 				},
 				{
 					text: "Vomit survivors",
 					start: "sm_vomitplayer @survivors",
-					end: "sm_vomitplayer @survivors",
+					end: "",
 					active_time: "none"
 				},
 				{

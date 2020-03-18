@@ -28,6 +28,7 @@ Handle g_sdk_vomit_infected = INVALID_HANDLE;
 #include "effect_sethpplayer.sp"
 #include "effect_vomitplayer.sp"
 #include "effect_sizeplayer.sp"
+#include "effect_entityrain.sp"
 
 public void OnPluginStart()
 {
@@ -36,6 +37,7 @@ public void OnPluginStart()
 	RegAdminCmd("sm_sethpplayer", Command_SetHpPlayer, ADMFLAG_GENERIC, "Set a player's health");
 	RegAdminCmd("sm_vomitplayer", Command_VomitPlayer, ADMFLAG_GENERIC, "Vomits the desired player");
 	RegAdminCmd("sm_sizeplayer", Command_SizePlayer, ADMFLAG_GENERIC, "Resize a player's model (Most likely, their pants)");
+	RegAdminCmd("sm_entityrain", Command_EntityRain, ADMFLAG_GENERIC, "Will rain the specified entity");
 
 	LoadTranslations("common.phrases.txt");
 	

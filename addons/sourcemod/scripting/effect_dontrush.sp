@@ -43,6 +43,7 @@ public Action Command_DontRush(int client, int args)
 	if (!g_dontrush_supported)
 	{
 		ReplyToCommand(client, "[SM] dontrush: Map not supported.");
+		return Plugin_Handled;
 	}
 	
 	int target_list[MAXPLAYERS];

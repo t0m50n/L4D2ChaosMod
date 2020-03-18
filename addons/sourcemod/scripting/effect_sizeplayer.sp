@@ -13,7 +13,7 @@ public Action Command_SizePlayer(int client, int args)
 	
 	char s_scale[255];
 	GetCmdArg(2, s_scale, sizeof(s_scale));
-	float f_scale = StringToFloat(s_velocity);
+	float f_scale = StringToFloat(s_scale);
 	
 	for (int i = 0; i < target_count; i++)
 	{

@@ -131,7 +131,6 @@ public Action Command_Start_Effect(int client, int args)
 	}
 	
 	ReplyToCommand(client, "Effect not found");
- 
 	return Plugin_Handled;
 }
 
