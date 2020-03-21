@@ -60,8 +60,8 @@ let effects_tree = {
 					active_time: "none"
 				},
 				{
-					text: "Witches",
-					start: "sm_entityrain @all witch 1",
+					text: "Raining Witches",
+					start: "sm_entityrain @all witch 2",
 					end: "",
 					active_time: "none"
 				}
@@ -156,6 +156,18 @@ let effects_tree = {
 					start: "sm_giveweapon @survivors gnome",
 					end: "",
 					active_time: "none"
+				},
+				{
+					text: "High weapon damage",
+					start: "exec sourcemod/chaosmod/high_weapon_damage_start.cfg",
+					end: "sm_damage_reset",
+					active_time: "normal"
+				},
+				{
+					text: "Low weapon damage",
+					start: "exec sourcemod/chaosmod/low_weapon_damage_start",
+					end: "sm_damage_reset",
+					active_time: "normal"
 				}
 			]
 		},
@@ -187,6 +199,30 @@ let effects_tree = {
 					text: "Endless Hordes",
 					start: "exec sourcemod/chaosmod/endless_hordes_start",
 					end: "exec sourcemod/chaosmod/endless_hordes_end",
+					active_time: "normal"
+				},
+				{
+					text: "Too many specials",
+					start: "exec sourcemod/chaosmod/too_many_specials_start",
+					end: "exec sourcemod/l4d2_autoIS",
+					active_time: "normal"
+				},
+				{
+					text: "Too many boomers",
+					start: "exec sourcemod/chaosmod/too_many_boomers_start",
+					end: "exec sourcemod/l4d2_autoIS",
+					active_time: "normal"
+				},
+				{
+					text: "Too many spitters",
+					start: "exec sourcemod/chaosmod/too_many_spitters_start",
+					end: "exec sourcemod/l4d2_autoIS",
+					active_time: "normal"
+				},
+				{
+					text: "Taaank",
+					start: "exec sourcemod/chaosmod/taank_start",
+					end: "exec sourcemod/l4d2_autoIS",
 					active_time: "normal"
 				}
 			]

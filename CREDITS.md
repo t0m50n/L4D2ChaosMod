@@ -13,3 +13,11 @@ l4d_dissolve_infected
 security_entity_limit
 
 l4d2_weaponspawner_v10a
+
+l4d2_autoIS
+
+security_entity_limit
+
+l4d2_spawnuncommons
+
+l4d_damage

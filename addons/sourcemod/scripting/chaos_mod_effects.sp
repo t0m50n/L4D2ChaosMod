@@ -27,6 +27,7 @@ Handle g_sdk_set_temp_hp = INVALID_HANDLE;
 #include "effect_charge.sp"
 #include "effect_dontrush.sp"
 #include "effect_sethpplayer.sp"
+#include "effect_settemphpplayer.sp"
 #include "effect_vomitplayer.sp"
 #include "effect_sizeplayer.sp"
 #include "effect_entityrain.sp"
