@@ -190,12 +190,6 @@ let effects_tree = {
 					active_time: "long"
 				},
 				{
-					text: "Tough Zombies",
-					start:"sm_cvar z_health 400",
-					end:"sm_cvar z_health 50",
-					active_time: "long"
-				},
-				{
 					text: "Endless Hordes",
 					start: "exec sourcemod/chaosmod/endless_hordes_start",
 					end: "exec sourcemod/chaosmod/endless_hordes_end",
@@ -224,6 +218,24 @@ let effects_tree = {
 					start: "exec sourcemod/chaosmod/taank_start",
 					end: "exec sourcemod/l4d2_autoIS",
 					active_time: "normal"
+				},
+				{
+					text: "Spawn clown horde",
+					start: "sm_spawnuncommonhorde clown",
+					end: "",
+					active_time: "none"
+				},
+				{
+					text: "Spawn mud horde",
+					start: "sm_spawnuncommonhorde mud",
+					end: "",
+					active_time: "none"
+				},
+				{
+					text: "Spawn jimmy horde",
+					start: "sm_spawnuncommonhorde jimmy",
+					end: "",
+					active_time: "none"
 				}
 			]
 		}
