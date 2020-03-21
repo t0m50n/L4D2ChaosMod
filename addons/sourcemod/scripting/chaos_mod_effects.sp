@@ -22,6 +22,7 @@ Handle g_game_conf = INVALID_HANDLE;
 Handle g_sdk_push_player = INVALID_HANDLE;
 Handle g_sdk_vomit_survivor = INVALID_HANDLE;
 Handle g_sdk_vomit_infected = INVALID_HANDLE;
+Handle g_sdk_set_temp_hp = INVALID_HANDLE;
 
 #include "effect_charge.sp"
 #include "effect_dontrush.sp"
@@ -35,6 +36,7 @@ public void OnPluginStart()
 	RegAdminCmd("sm_charge", Command_Charge, ADMFLAG_GENERIC, "Will launch a survivor far away");
 	RegAdminCmd("sm_dontrush", Command_DontRush, ADMFLAG_GENERIC, "Forces a player to re-appear in the starting safe zone");
 	RegAdminCmd("sm_sethpplayer", Command_SetHpPlayer, ADMFLAG_GENERIC, "Set a player's health");
+	RegAdminCmd("sm_settemphpplayer", Command_SetTempHpPlayer, ADMFLAG_GENERIC, "Set a player's temporary health");
 	RegAdminCmd("sm_vomitplayer", Command_VomitPlayer, ADMFLAG_GENERIC, "Vomits the desired player");
 	RegAdminCmd("sm_sizeplayer", Command_SizePlayer, ADMFLAG_GENERIC, "Resize a player's model (Most likely, their pants)");
 	RegAdminCmd("sm_entityrain", Command_EntityRain, ADMFLAG_GENERIC, "Will rain the specified entity");
@@ -77,6 +79,15 @@ public void OnPluginStart()
 	if(g_sdk_vomit_infected == INVALID_HANDLE)
 	{
 		SetFailState(SDK_CALL_ERROR_MSG, "CTerrorPlayer_OnHitByVomitJar");
+	}
+
+	StartPrepSDKCall(SDKCall_Player);
+	PrepSDKCall_SetFromConf(g_game_conf, SDKConf_Signature, "CTerrorPlayer_SetHealthBuffer");
+	PrepSDKCall_AddParameter(SDKType_Float, SDKPass_Plain);
+	g_sdk_set_temp_hp = EndPrepSDKCall();
+	if(g_sdk_set_temp_hp == INVALID_HANDLE)
+	{
+		SetFailState(SDK_CALL_ERROR_MSG, "CTerrorPlayer_SetHealthBuffer");
 	}
 }
 

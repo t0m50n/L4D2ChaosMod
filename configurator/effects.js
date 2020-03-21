@@ -135,8 +135,8 @@ let effects_tree = {
 				},
 				{
 					text: "1 hp survivors",
-					start: "sm_sethpplayer @survivors 1",
-					end: "sm_sethpplayer @survivors 80",
+					start: "sm_sethpplayer @survivors 1; sm_settemphpplayer 0",
+					end: "sm_sethpplayer @survivors 80; sm_settemphpplayer 0",
 					active_time: "normal"
 				},
 				{
@@ -148,6 +148,12 @@ let effects_tree = {
 				{
 					text: "Give chainsaws",
 					start: "sm_giveweapon @survivors chainsaw",
+					end: "",
+					active_time: "none"
+				},
+				{
+					text: "Give gnomes",
+					start: "sm_giveweapon @survivors gnome",
 					end: "",
 					active_time: "none"
 				}

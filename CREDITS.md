@@ -9,3 +9,7 @@ https://forums.alliedmods.net/showthread.php?p=1032403
 Took the saferoom location code
 
 l4d_dissolve_infected
+
+security_entity_limit
+
+l4d2_weaponspawner_v10a
