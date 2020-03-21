@@ -70,13 +70,13 @@ float Parse_ActiveTime(char[] active_time)
 		durations.GetKey(i, duration_name, sizeof(duration_name));
 		if (StrEqual(active_time, duration_name, false))
 		{
-			CloseHandle(durations);
+			delete durations;
 			ConVar c;
 			g_effect_durations.GetValue(duration_name, c);
 			return c.FloatValue;
 		}
 	}
-	CloseHandle(durations);
+	delete durations;
 	
 	float f = StringToFloat(active_time);
 	if (f < 0.01)

@@ -31,7 +31,7 @@ let effects_tree = {
 				},
 				{
 					text: "Zero Gravity",
-					start: "sm_cvar sv_gravity 0",
+					start: "sm_cvar sv_gravity 1",
 					end: "sm_cvar sv_gravity 800",
 					active_time: "short"
 				},
@@ -55,7 +55,13 @@ let effects_tree = {
 				},
 				{
 					text: "Raining gascans",
-					start: "sm_entityrain @all weapon_gascan",
+					start: "sm_entityrain @all weapon_gascan 10",
+					end: "",
+					active_time: "none"
+				},
+				{
+					text: "Witches",
+					start: "sm_entityrain @all witch 1",
 					end: "",
 					active_time: "none"
 				}
@@ -132,6 +138,18 @@ let effects_tree = {
 					start: "sm_sethpplayer @survivors 1",
 					end: "sm_sethpplayer @survivors 80",
 					active_time: "normal"
+				},
+				{
+					text: "Give grenade launchers",
+					start: "sm_giveweapon @survivors grenade_launcher",
+					end: "",
+					active_time: "none"
+				},
+				{
+					text: "Give chainsaws",
+					start: "sm_giveweapon @survivors chainsaw",
+					end: "",
+					active_time: "none"
 				}
 			]
 		},
@@ -145,20 +163,13 @@ let effects_tree = {
 					text: "Elderly Zombies",
 					start: "sm_cvar z_speed 80",
 					end: "sm_cvar z_speed 250",
-					active_time: "normal"
+					active_time: "long"
 				},
 				{
 					text: "Marathon Zombies",
 					start: "sm_cvar z_speed 500",
 					end: "sm_cvar z_speed 250",
-					active_time: "normal"
-				},
-				{
-					text: "1 Hit Zombies",
-					start: "sm_cvar z_health 1",
-					end: "sm_cvar z_health 50",
-					active_time: "normal"
-					
+					active_time: "long"
 				},
 				{
 					text: "Tough Zombies",

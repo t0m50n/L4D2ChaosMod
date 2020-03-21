@@ -16,14 +16,19 @@ public Action Command_VomitPlayer(int client, int args)
 	
 	for (int i = 0; i < target_count; i++)
 	{
-		VomitPlayer(client, target_list[i]);
+		VomitPlayer(target_list[i]);
 	}
 	
 	return Plugin_Handled;
 }
 
-void VomitPlayer(int sender, int target)
+void VomitPlayer(int target)
 {
+	if (!IsClientInGame(target) || !IsPlayerAlive(target))
+	{
+		return;
+	}
+
 	Handle sdk_call = INVALID_HANDLE;
 	
 	switch (GetClientTeam(target))
@@ -38,7 +43,6 @@ void VomitPlayer(int sender, int target)
 		}
 		default:
 		{
-			ReplyToCommand(sender, "[SM] Spectators cannot be vomited!");
 			return;
 		}
 	}

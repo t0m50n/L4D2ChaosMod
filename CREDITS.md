@@ -7,3 +7,5 @@ https://forums.alliedmods.net/showthread.php?p=1251446
 [L4D2] No Safe Room Medkits v1.0.1
 https://forums.alliedmods.net/showthread.php?p=1032403
 Took the saferoom location code
+
+l4d_dissolve_infected

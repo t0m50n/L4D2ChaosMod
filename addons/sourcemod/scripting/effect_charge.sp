@@ -28,6 +28,11 @@ public Action Command_Charge(int client, int args)
 
 void Charge(int target, float velocity)
 {
+	if (!IsClientInGame(target) || !IsPlayerAlive(target))
+	{
+		return;
+	}
+	
 	float tpos[3];
 	float spos[3];
 	

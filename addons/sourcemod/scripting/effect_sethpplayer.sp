@@ -18,8 +18,17 @@ public Action Command_SetHpPlayer(int client, int args)
 	
 	for (int i = 0; i < target_count; i++)
 	{
-		SetEntityHealth(target_list[i], health);
+		SetHpPlayer(target_list[i], health);
 	}
 	
 	return Plugin_Handled;
+}
+
+void SetHpPlayer(int target, int health)
+{
+	if (!IsClientInGame(target) || !IsPlayerAlive(target))
+	{
+		return;
+	}
+	SetEntityHealth(target, health);
 }

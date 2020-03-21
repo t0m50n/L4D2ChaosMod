@@ -35,6 +35,8 @@ ConVar g_short_time_duration;
 ConVar g_normal_time_duration;
 ConVar g_long_time_duration;
 
+bool g_round_started = false;
+
 #include "parse.sp"
 
 public void OnPluginStart()
@@ -42,15 +44,10 @@ public void OnPluginStart()
 	CreateConVar("chaosmod_version", PLUGIN_VERSION, " Version of Chaos Mod on this server ", FCVAR_SPONLY|FCVAR_DONTRECORD);
 	g_enabled = CreateConVar("chaosmod_enabled", "1", "Enable/Disable Chaos Mod", FCVAR_NOTIFY);
 	g_time_between_effects = CreateConVar("chaosmod_time_between_effects", "30", "How long to wait in seconds between activating effects", FCVAR_NOTIFY, true, 0.1);
-	g_short_time_duration = CreateConVar("chaosmod_short_time_duration", "15", "A short effect will be enabled for this many seconds", FCVAR_NOTIFY, true, 0.1);
-	g_normal_time_duration = CreateConVar("chaosmod_normal_time_duration", "30", "A normal effect will be enabled for this many seconds", FCVAR_NOTIFY, true, 0.1);
-	g_long_time_duration = CreateConVar("chaosmod_long_time_duration", "60", "A long effect will be enabled for this many seconds", FCVAR_NOTIFY, true, 0.1);
-	
-	g_enabled.AddChangeHook(Cvar_EnabledChanged);
-	g_time_between_effects.AddChangeHook(Cvar_TimeBetweenEffectsChanged);
-	
-	HookEvent("server_cvar", Event_Cvar, EventHookMode_Pre);
-	
+	g_short_time_duration = CreateConVar("chaosmod_short_time_duration", "30", "A short effect will be enabled for this many seconds", FCVAR_NOTIFY, true, 0.1);
+	g_normal_time_duration = CreateConVar("chaosmod_normal_time_duration", "60", "A normal effect will be enabled for this many seconds", FCVAR_NOTIFY, true, 0.1);
+	g_long_time_duration = CreateConVar("chaosmod_long_time_duration", "120", "A long effect will be enabled for this many seconds", FCVAR_NOTIFY, true, 0.1);
+
 	g_active_effects = new ArrayList();
 	g_effect_durations = new StringMap();
 	g_effect_durations.SetValue("none", g_normal_time_duration);
@@ -58,6 +55,13 @@ public void OnPluginStart()
 	g_effect_durations.SetValue("normal", g_normal_time_duration);
 	g_effect_durations.SetValue("long", g_long_time_duration);
 	g_effects = Parse_KeyValueFile(EFFECTS_PATH);
+
+	g_time_between_effects.AddChangeHook(Cvar_TimeBetweenEffectsChanged);
+	HookEvent("server_cvar", Event_Cvar, EventHookMode_Pre);
+	HookEvent("round_start", Event_RoundStart, EventHookMode_Post);
+	HookEvent("round_end", Event_RoundEnd, EventHookMode_Pre);
+	g_effect_timer = CreateTimer(g_time_between_effects.FloatValue, Timer_StartRandomEffect, _, TIMER_REPEAT);
+	g_panel_timer = CreateTimer(PANEL_UPDATE_RATE, Timer_UpdatePanel, _, TIMER_REPEAT);
 	
 	AutoExecConfig(true);
 	
@@ -66,18 +70,18 @@ public void OnPluginStart()
 	#endif
 }
 
-void StartStopGlobalTimers(bool start)
+public Action Event_RoundStart(Event event, const char[] name, bool dontBroadcast)
 {
-	if (start)
-	{
-		g_effect_timer = CreateTimer(g_time_between_effects.FloatValue, Timer_StartRandomEffect, _, TIMER_REPEAT);
-		g_panel_timer = CreateTimer(PANEL_UPDATE_RATE, Timer_UpdatePanel, _, TIMER_REPEAT);
-	}
-	else
-	{
-		CloseHandle(g_effect_timer);
-		CloseHandle(g_panel_timer);
-	}
+	g_round_started = true;
+
+	return Plugin_Continue;
+}
+
+public Action Event_RoundEnd(Event event, const char[] name, bool dontBroadcast)
+{
+	g_round_started = false;
+
+	return Plugin_Continue;
 }
 
 public Action Event_Cvar(Event event, const char[] name, bool dontBroadcast)
@@ -86,7 +90,6 @@ public Action Event_Cvar(Event event, const char[] name, bool dontBroadcast)
 	{
 		return Plugin_Continue;
 	}
-	
 	return Plugin_Handled;
 }
 
@@ -96,13 +99,10 @@ public void Cvar_TimeBetweenEffectsChanged(ConVar convar, char[] oldValue, char[
 	{
 		return;
 	}
-	StartStopGlobalTimers(false);
-	StartStopGlobalTimers(true);
-}
-
-public void Cvar_EnabledChanged(ConVar convar, char[] oldValue, char[] newValue)
-{
-	StartStopGlobalTimers(convar.BoolValue);
+	delete g_effect_timer;
+	delete g_panel_timer;
+	g_effect_timer = CreateTimer(g_time_between_effects.FloatValue, Timer_StartRandomEffect, _, TIMER_REPEAT);
+	g_panel_timer = CreateTimer(PANEL_UPDATE_RATE, Timer_UpdatePanel, _, TIMER_REPEAT);
 }
 
 public int Panel_DoNothing(Menu menu, MenuAction action, int param1, int param2) {}
@@ -157,26 +157,43 @@ void StartEffect(StringMap effect)
 
 public Action Timer_StartRandomEffect(Handle timer)
 {
+	if (!g_enabled.BoolValue || !g_round_started)
+	{
+		return Plugin_Handled;
+	}
+
 	int random_effect_i = GetRandomInt(0, g_effects.Length - 1);
 	StringMap effect = view_as<StringMap>(g_effects.Get(random_effect_i));
 	
 	StartEffect(effect);
+
+	return Plugin_Handled;
 }
 
-public Action Timer_StopEffect(Handle timer, any effect_data)
+public Action Timer_StopEffect(Handle timer, StringMap effect)
 {
-	StringMap effect = view_as<StringMap>(effect_data);
-	
+	if (!g_enabled.BoolValue)
+	{
+		return Plugin_Handled;
+	}
+
 	char buffer[255];
 	effect.GetString("end", buffer, sizeof(buffer));
 	ServerCommand(buffer);
+
+	return Plugin_Handled;
 }
 
 public Action Timer_UpdatePanel(Handle timer, any unused)
 {
 	static int no_active_effects = 0;
 	static int time_until_next_effect = -1;
-	
+
+	if (!g_enabled.BoolValue)
+	{
+		return Plugin_Handled;
+	}
+
 	if (no_active_effects != g_active_effects.Length || time_until_next_effect < 0)
 	{
 		time_until_next_effect = g_time_between_effects.IntValue;
@@ -236,7 +253,7 @@ public Action Timer_UpdatePanel(Handle timer, any unused)
 		if (time_left == 1)
 		{
 			g_active_effects.Erase(i);
-			CloseHandle(active_effect);
+			delete active_effect;
 			continue;
 		}
 		active_effect.SetValue("time_left", time_left - 1);
@@ -252,5 +269,7 @@ public Action Timer_UpdatePanel(Handle timer, any unused)
 		}
 	}
 	
-	CloseHandle(p);
+	delete p;
+
+	return Plugin_Handled;
 }

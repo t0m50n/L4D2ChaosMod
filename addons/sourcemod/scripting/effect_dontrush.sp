@@ -59,9 +59,17 @@ public Action Command_DontRush(int client, int args)
 	
 	for (int i = 0; i < target_count; i++)
 	{
-		int target = target_list[i];
-		TeleportEntity(target, g_dontrush_tele_pos, NULL_VECTOR, NULL_VECTOR);
+		DontRush(target_list[i]);
 	}
 	
 	return Plugin_Handled;
+}
+
+void DontRush(int target)
+{
+	if (!IsClientInGame(target) || !IsPlayerAlive(target))
+	{
+		return;
+	}
+	TeleportEntity(target, g_dontrush_tele_pos, NULL_VECTOR, NULL_VECTOR);
 }
