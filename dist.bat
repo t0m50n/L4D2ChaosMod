@@ -5,4 +5,5 @@ xcopy /e /i cfg dist\cfg
 xcopy /e /i configurator dist\configurator
 copy /y README.md dist\README.md
 copy /y CREDITS.md dist\CREDITS.md
+copy /y LICENSE.txt dist\LICENSE.txt
 powershell Compress-Archive -Force dist\* L4D2_Chaos_Mod.zip
