@@ -32,6 +32,7 @@ Handle g_sdk_set_temp_hp = INVALID_HANDLE;
 #include "effect_sizeplayer.sp"
 #include "effect_entityrain.sp"
 #include "effect_cheat.sp"
+#include "effect_cvarsilent.sp"
 
 public void OnPluginStart()
 {
@@ -43,6 +44,7 @@ public void OnPluginStart()
 	RegAdminCmd("sm_sizeplayer", Command_SizePlayer, ADMFLAG_ROOT, "Resize a player's model (Most likely, their pants)");
 	RegAdminCmd("sm_entityrain", Command_EntityRain, ADMFLAG_ROOT, "Will rain the specified entity");
 	RegAdminCmd("sm_cheat", Command_Cheat, ADMFLAG_ROOT, "Runs cheat commands with sv_cheats 0");
+	RegAdminCmd("sm_cvarsilent", Command_CvarSilent, ADMFLAG_ROOT, "Changes cvar without notifying clients");
 
 	LoadTranslations("common.phrases.txt");
 	

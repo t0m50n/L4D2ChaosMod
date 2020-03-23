@@ -13,26 +13,26 @@ let effects_tree = {
 			children: [
 				{
 					text: "Half Gravity",
-					start: "sm_cvar sv_gravity 400",
-					end: "sm_cvar sv_gravity 800",
+					start: "sm_cvarsilent sv_gravity 400",
+					end: "sm_cvarsilent sv_gravity 800",
 					active_time: "normal"
 				},
 				{
 					text: "Double Gravity",
-					start: "sm_cvar sv_gravity 1600",
-					end: "sm_cvar sv_gravity 800",
+					start: "sm_cvarsilent sv_gravity 1600",
+					end: "sm_cvarsilent sv_gravity 800",
 					active_time: "normal"
 				},
 				{
 					text: "Quarter Gravity",
-					start: "sm_cvar sv_gravity 200",
-					end: "sm_cvar sv_gravity 800",
+					start: "sm_cvarsilent sv_gravity 200",
+					end: "sm_cvarsilent sv_gravity 800",
 					active_time: "normal"
 				},
 				{
 					text: "Zero Gravity",
-					start: "sm_cvar sv_gravity 1",
-					end: "sm_cvar sv_gravity 800",
+					start: "sm_cvarsilent sv_gravity 1",
+					end: "sm_cvarsilent sv_gravity 800",
 					active_time: "short"
 				},
 				{
@@ -49,8 +49,8 @@ let effects_tree = {
 				},
 				{
 					text: "Dissolve Infected on Death",
-					start: "sm_cvar l4d_dissolve_allow 1",
-					end: "sm_cvar l4d_dissolve_allow 0",
+					start: "sm_cvarsilent l4d_dissolve_allow 1",
+					end: "sm_cvarsilent l4d_dissolve_allow 0",
 					active_time: "normal"
 				},
 				{
@@ -69,20 +69,20 @@ let effects_tree = {
 			children: [
 				{
 					text: "Super Crouch",
-					start: "sm_cvar survivor_crouch_speed 400",
-					end: "sm_cvar survivor_crouch_speed 75",
+					start: "sm_cvarsilent survivor_crouch_speed 400",
+					end: "sm_cvarsilent survivor_crouch_speed 75",
 					active_time: "short"
 				},
 				{
 					text: "Infinite Ammo",
-					start:"sm_cvar sv_infinite_ammo 1",
-					end:"sm_cvar sv_infinite_ammo 0",
+					start:"sm_cvarsilent sv_infinite_ammo 1",
+					end:"sm_cvarsilent sv_infinite_ammo 0",
 					active_time: "normal"
 				},
 				{
 					text: "Bots Keep Shooting",
-					start: "sm_cvar sb_open_fire 1",
-					end: "sm_cvar sb_open_fire 0",
+					start: "sm_cvarsilent sb_open_fire 1",
+					end: "sm_cvarsilent sb_open_fire 0",
 					active_time: "normal"
 				},
 				{
@@ -173,14 +173,14 @@ let effects_tree = {
 			children: [
 				{
 					text: "Elderly Zombies",
-					start: "sm_cvar z_speed 80",
-					end: "sm_cvar z_speed 250",
+					start: "sm_cvarsilent z_speed 80",
+					end: "sm_cvarsilent z_speed 250",
 					active_time: "long"
 				},
 				{
 					text: "Marathon Zombies",
-					start: "sm_cvar z_speed 500",
-					end: "sm_cvar z_speed 250",
+					start: "sm_cvarsilent z_speed 500",
+					end: "sm_cvarsilent z_speed 250",
 					active_time: "long"
 				},
 				{
