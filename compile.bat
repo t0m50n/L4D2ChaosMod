@@ -6,5 +6,5 @@ set SCRIPT_DIR=addons\sourcemod\scripting\
 "%SP_COMPILER_PATH%" "addons\sourcemod\scripting\chaos_mod_effects.sp"
 
 move /y "*.smx" "%SCRIPT_DIR%\..\plugins\"
-xcopy /y /e /c "%SCRIPT_DIR%\..\..\..\addons" "%COPY_DIR%\..\..\"
-xcopy /y /e /c "%SCRIPT_DIR%\..\..\..\cfg" "%COPY_DIR%\..\..\..\cfg"
+xcopy /y /e "%SCRIPT_DIR%\..\..\..\addons" "%COPY_DIR%\..\..\"
+xcopy /y /e "%SCRIPT_DIR%\..\..\..\cfg" "%COPY_DIR%\..\..\..\cfg"
