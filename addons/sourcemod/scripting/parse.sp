@@ -8,12 +8,10 @@ ArrayList Parse_KeyValueFile(const char[] path)
 	
 	if (!kv.ImportFromFile(effects_path))
 	{
-		delete kv;
 		SetFailState("Could not open %s", effects_path);
 	}
 	if (!kv.GotoFirstSubKey())
 	{
-		delete kv;
 		SetFailState("Where the effects at?");
 	}
 	

@@ -31,16 +31,18 @@ Handle g_sdk_set_temp_hp = INVALID_HANDLE;
 #include "effect_vomitplayer.sp"
 #include "effect_sizeplayer.sp"
 #include "effect_entityrain.sp"
+#include "effect_cheat.sp"
 
 public void OnPluginStart()
 {
-	RegAdminCmd("sm_charge", Command_Charge, ADMFLAG_GENERIC, "Will launch a survivor far away");
-	RegAdminCmd("sm_dontrush", Command_DontRush, ADMFLAG_GENERIC, "Forces a player to re-appear in the starting safe zone");
-	RegAdminCmd("sm_sethpplayer", Command_SetHpPlayer, ADMFLAG_GENERIC, "Set a player's health");
-	RegAdminCmd("sm_settemphpplayer", Command_SetTempHpPlayer, ADMFLAG_GENERIC, "Set a player's temporary health");
-	RegAdminCmd("sm_vomitplayer", Command_VomitPlayer, ADMFLAG_GENERIC, "Vomits the desired player");
-	RegAdminCmd("sm_sizeplayer", Command_SizePlayer, ADMFLAG_GENERIC, "Resize a player's model (Most likely, their pants)");
-	RegAdminCmd("sm_entityrain", Command_EntityRain, ADMFLAG_GENERIC, "Will rain the specified entity");
+	RegAdminCmd("sm_charge", Command_Charge, ADMFLAG_ROOT, "Will launch a survivor far away");
+	RegAdminCmd("sm_dontrush", Command_DontRush, ADMFLAG_ROOT, "Forces a player to re-appear in the starting safe zone");
+	RegAdminCmd("sm_sethpplayer", Command_SetHpPlayer, ADMFLAG_ROOT, "Set a player's health");
+	RegAdminCmd("sm_settemphpplayer", Command_SetTempHpPlayer, ADMFLAG_ROOT, "Set a player's temporary health");
+	RegAdminCmd("sm_vomitplayer", Command_VomitPlayer, ADMFLAG_ROOT, "Vomits the desired player");
+	RegAdminCmd("sm_sizeplayer", Command_SizePlayer, ADMFLAG_ROOT, "Resize a player's model (Most likely, their pants)");
+	RegAdminCmd("sm_entityrain", Command_EntityRain, ADMFLAG_ROOT, "Will rain the specified entity");
+	RegAdminCmd("sm_cheat", Command_Cheat, ADMFLAG_ROOT, "Runs cheat commands with sv_cheats 0");
 
 	LoadTranslations("common.phrases.txt");
 	

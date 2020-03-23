@@ -36,32 +36,26 @@ let effects_tree = {
 					active_time: "short"
 				},
 				{
-					text: "Shuffle names",
+					text: "Shuffle Names",
 					start: "sm_rename @all",
 					end: "",
 					active_time: "none"
 				},
 				{
-					text: "Throw everyone",
+					text: "Throw Everyone",
 					start: "sm_charge @all 600",
 					end: "",
 					active_time: "none"
 				},
 				{
-					text: "Dissolve infected on death",
+					text: "Dissolve Infected on Death",
 					start: "sm_cvar l4d_dissolve_allow 1",
 					end: "sm_cvar l4d_dissolve_allow 0",
 					active_time: "normal"
 				},
 				{
-					text: "Raining gascans",
+					text: "Raining Gascans",
 					start: "sm_entityrain @all weapon_gascan 10",
-					end: "",
-					active_time: "none"
-				},
-				{
-					text: "Raining Witches",
-					start: "sm_entityrain @all witch 2",
 					end: "",
 					active_time: "none"
 				}
@@ -110,61 +104,61 @@ let effects_tree = {
 					active_time: "normal"
 				},
 				{
-					text: "Too many pills",
+					text: "Too Many Pills",
 					start: "sm_drug @survivors 1",
 					end: "sm_drug @survivors 0",
 					active_time: "normal"
 				},
 				{
-					text: "Teleport back to saferoom",
+					text: "Teleport Back to Saferoom",
 					start: "sm_dontrush @survivors",
 					end: "",
 					active_time: "none"
 				},
 				{
-					text: "Big pants",
+					text: "Big Pants",
 					start: "sm_sizeplayer @survivors 2.5",
 					end: "sm_sizeplayer @survivors 1",
 					active_time: "normal"
 				},
 				{
-					text: "Vomit survivors",
+					text: "Vomit Survivors",
 					start: "sm_vomitplayer @survivors",
 					end: "",
 					active_time: "none"
 				},
 				{
-					text: "1 hp survivors",
+					text: "1 HP Survivors",
 					start: "sm_sethpplayer @survivors 1; sm_settemphpplayer 0",
 					end: "sm_sethpplayer @survivors 80; sm_settemphpplayer 0",
 					active_time: "normal"
 				},
 				{
-					text: "Give grenade launchers",
+					text: "Give Grenade Launchers",
 					start: "sm_giveweapon @survivors grenade_launcher",
 					end: "",
 					active_time: "none"
 				},
 				{
-					text: "Give chainsaws",
+					text: "Give Chainsaws",
 					start: "sm_giveweapon @survivors chainsaw",
 					end: "",
 					active_time: "none"
 				},
 				{
-					text: "Give gnomes",
+					text: "Give Gnomes",
 					start: "sm_giveweapon @survivors gnome",
 					end: "",
 					active_time: "none"
 				},
 				{
-					text: "High weapon damage",
+					text: "High Weapon Damage",
 					start: "exec sourcemod/chaosmod/high_weapon_damage_start.cfg",
 					end: "sm_damage_reset",
 					active_time: "normal"
 				},
 				{
-					text: "Low weapon damage",
+					text: "Low Weapon Damage",
 					start: "exec sourcemod/chaosmod/low_weapon_damage_start",
 					end: "sm_damage_reset",
 					active_time: "normal"
@@ -196,19 +190,19 @@ let effects_tree = {
 					active_time: "normal"
 				},
 				{
-					text: "Too many specials",
+					text: "Too Many Specials",
 					start: "exec sourcemod/chaosmod/too_many_specials_start",
 					end: "exec sourcemod/l4d2_autoIS",
 					active_time: "normal"
 				},
 				{
-					text: "Too many boomers",
+					text: "Too Many Boomers",
 					start: "exec sourcemod/chaosmod/too_many_boomers_start",
 					end: "exec sourcemod/l4d2_autoIS",
 					active_time: "normal"
 				},
 				{
-					text: "Too many spitters",
+					text: "Too Many Spitters",
 					start: "exec sourcemod/chaosmod/too_many_spitters_start",
 					end: "exec sourcemod/l4d2_autoIS",
 					active_time: "normal"
@@ -220,20 +214,26 @@ let effects_tree = {
 					active_time: "normal"
 				},
 				{
-					text: "Spawn clown horde",
+					text: "Spawn Clown Horde",
 					start: "sm_spawnuncommonhorde clown",
 					end: "",
 					active_time: "none"
 				},
 				{
-					text: "Spawn mud horde",
+					text: "Spawn Mud Horde",
 					start: "sm_spawnuncommonhorde mud",
 					end: "",
 					active_time: "none"
 				},
 				{
-					text: "Spawn jimmy horde",
+					text: "Spawn Jimmy Horde",
 					start: "sm_spawnuncommonhorde jimmy",
+					end: "",
+					active_time: "none"
+				},
+				{
+					text: "Raining Witches",
+					start: "sm_entityrain @all witch 2",
 					end: "",
 					active_time: "none"
 				}

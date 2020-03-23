@@ -1,7 +1,7 @@
 #pragma semicolon 1
 #pragma newdecls required
 
-#define DEBUG
+// #define DEBUG
 
 #define PLUGIN_AUTHOR "T0M50N"
 #define PLUGIN_VERSION "0.01"
@@ -44,7 +44,7 @@ public void OnPluginStart()
 	CreateConVar("chaosmod_version", PLUGIN_VERSION, " Version of Chaos Mod on this server ", FCVAR_SPONLY|FCVAR_DONTRECORD);
 	g_enabled = CreateConVar("chaosmod_enabled", "1", "Enable/Disable Chaos Mod", FCVAR_NOTIFY);
 	g_time_between_effects = CreateConVar("chaosmod_time_between_effects", "30", "How long to wait in seconds between activating effects", FCVAR_NOTIFY, true, 0.1);
-	g_short_time_duration = CreateConVar("chaosmod_short_time_duration", "30", "A short effect will be enabled for this many seconds", FCVAR_NOTIFY, true, 0.1);
+	g_short_time_duration = CreateConVar("chaosmod_short_time_duration", "15", "A short effect will be enabled for this many seconds", FCVAR_NOTIFY, true, 0.1);
 	g_normal_time_duration = CreateConVar("chaosmod_normal_time_duration", "60", "A normal effect will be enabled for this many seconds", FCVAR_NOTIFY, true, 0.1);
 	g_long_time_duration = CreateConVar("chaosmod_long_time_duration", "120", "A long effect will be enabled for this many seconds", FCVAR_NOTIFY, true, 0.1);
 
