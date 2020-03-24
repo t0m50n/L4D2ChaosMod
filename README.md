@@ -22,7 +22,7 @@ Left 4 Dead 2 or Left 4 Dead 2 dedicated server with sourcemod installed.
 3. Copy the generated text and paste it into %l4d2 install dir%\left4dead2\addons\sourcemod\configs\effects.cfg overwriting the previous contents.
 4. The generated cfg can be pasted back into the configurator to turn effects on and off in the future.
 
-The following cvars can also be changed in the server console:
+The following cvars can also be changed in the server console and in an auto-generated config file at %l4d2 install dir%\left4dead2\cfg\plugin.chaos_mod.cfg:
 ```
 // Enable/Disable Chaos Mod
 // -
