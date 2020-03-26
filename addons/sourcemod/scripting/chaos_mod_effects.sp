@@ -24,15 +24,15 @@ Handle g_sdk_vomit_survivor = INVALID_HANDLE;
 Handle g_sdk_vomit_infected = INVALID_HANDLE;
 Handle g_sdk_set_temp_hp = INVALID_HANDLE;
 
-#include "effect_charge.sp"
-#include "effect_dontrush.sp"
-#include "effect_sethpplayer.sp"
-#include "effect_settemphpplayer.sp"
-#include "effect_vomitplayer.sp"
-#include "effect_sizeplayer.sp"
-#include "effect_entityrain.sp"
-#include "effect_cheat.sp"
-#include "effect_cvarsilent.sp"
+#include "effects\effect_charge.sp"
+#include "effects\effect_dontrush.sp"
+#include "effects\effect_sethpplayer.sp"
+#include "effects\effect_settemphpplayer.sp"
+#include "effects\effect_vomitplayer.sp"
+#include "effects\effect_sizeplayer.sp"
+#include "effects\effect_entityrain.sp"
+#include "effects\effect_cheat.sp"
+#include "effects\effect_cvarsilent.sp"
 
 public void OnPluginStart()
 {

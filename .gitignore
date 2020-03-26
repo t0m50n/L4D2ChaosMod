@@ -1,4 +1,3 @@
-addons/sourcemod/plugins/chaos_mod.smx
-addons/sourcemod/plugins/chaos_mod_effects.smx
 dist
 *.zip
+*.smx
