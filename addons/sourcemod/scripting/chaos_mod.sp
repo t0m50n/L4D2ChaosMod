@@ -19,7 +19,7 @@ public Plugin myinfo =
 };
 
 #define EFFECTS_PATH "configs/effects.cfg"
-#define P_BAR_LENGTH 30
+#define P_BAR_LENGTH 36
 #define PANEL_UPDATE_RATE 1.0
 
 ArrayList g_effects;
@@ -57,6 +57,7 @@ public void OnPluginStart()
 	g_effects = Parse_KeyValueFile(EFFECTS_PATH);
 
 	g_time_between_effects.AddChangeHook(Cvar_TimeBetweenEffectsChanged);
+	g_enabled.AddChangeHook(Cvar_EnabledChanged);
 	HookEvent("server_cvar", Event_Cvar, EventHookMode_Pre);
 	HookEvent("round_start", Event_RoundStart, EventHookMode_Post);
 	HookEvent("round_end", Event_RoundEnd, EventHookMode_Pre);
@@ -105,6 +106,21 @@ public void Cvar_TimeBetweenEffectsChanged(ConVar convar, char[] oldValue, char[
 	g_panel_timer = CreateTimer(PANEL_UPDATE_RATE, Timer_UpdatePanel, _, TIMER_REPEAT);
 }
 
+public void Cvar_EnabledChanged(ConVar convar, char[] oldValue, char[] newValue)
+{
+	if (!g_enabled.BoolValue)
+	{
+		// Disable all currently active effects
+		for (int i = 0; i < g_active_effects.Length; i++)
+		{
+			StringMap active_effect = view_as<StringMap>(g_active_effects.Get(i));
+			StopEffect(active_effect);
+			delete active_effect;
+		}
+		g_active_effects.Clear();
+	}
+}
+
 public int Panel_DoNothing(Menu menu, MenuAction action, int param1, int param2) {}
 
 public Action Command_Start_Effect(int client, int args)
@@ -143,7 +159,10 @@ void StartEffect(StringMap effect)
 	ServerCommand(buffer);
 	
 	effect.GetString("name", buffer, sizeof(buffer));
-	active_effect.SetString("effect_name", buffer);
+	active_effect.SetString("name", buffer);
+
+	effect.GetString("end", buffer, sizeof(buffer));
+	active_effect.SetString("end", buffer);
 
 	float f_active_time;
 	effect.GetString("active_time", buffer, sizeof(buffer));
@@ -151,8 +170,14 @@ void StartEffect(StringMap effect)
 	active_effect.SetValue("time_left", RoundToFloor(f_active_time));
 	active_effect.SetValue("is_timed_effect", !StrEqual(buffer, "none", false));
 	
-	CreateTimer(f_active_time, Timer_StopEffect, effect);
 	g_active_effects.Push(active_effect);
+}
+
+void StopEffect(StringMap active_effect)
+{
+	char buffer[255];
+	active_effect.GetString("end", buffer, sizeof(buffer));
+	ServerCommand(buffer);
 }
 
 public Action Timer_StartRandomEffect(Handle timer)
@@ -166,20 +191,6 @@ public Action Timer_StartRandomEffect(Handle timer)
 	StringMap effect = view_as<StringMap>(g_effects.Get(random_effect_i));
 	
 	StartEffect(effect);
-
-	return Plugin_Handled;
-}
-
-public Action Timer_StopEffect(Handle timer, StringMap effect)
-{
-	if (!g_enabled.BoolValue)
-	{
-		return Plugin_Handled;
-	}
-
-	char buffer[255];
-	effect.GetString("end", buffer, sizeof(buffer));
-	ServerCommand(buffer);
 
 	return Plugin_Handled;
 }
@@ -203,62 +214,30 @@ public Action Timer_UpdatePanel(Handle timer, any unused)
 	
 	p.SetTitle("Chaos Mod");
 	
+	DrawProgressBarPanelText(p, 1 - (time_until_next_effect / g_time_between_effects.FloatValue));
+	if (time_until_next_effect > 0)
 	{
-		char next_effect_pbar[P_BAR_LENGTH + 1];
-		next_effect_pbar[P_BAR_LENGTH] = 0;
-		int pbar_fullness = RoundToFloor((time_until_next_effect / g_time_between_effects.FloatValue) * P_BAR_LENGTH);
-		for (int i = 0; i < P_BAR_LENGTH; i++)
-		{
-			if (i < pbar_fullness)
-			{
-				next_effect_pbar[i] = '#';
-			}
-			else
-			{
-				next_effect_pbar[i] = '_';
-			}
-		}
-		p.DrawText(next_effect_pbar);
-		
-		if (time_until_next_effect > 0)
-		{
-			time_until_next_effect--;
-		}
+		time_until_next_effect--;
 	}
 	
 	for (int i = g_active_effects.Length - 1; i >= 0; i--)
 	{
 		StringMap active_effect = view_as<StringMap>(g_active_effects.Get(i));
 		
+		DrawActiveEffectPanelText(p, active_effect);
+
 		int time_left;
 		active_effect.GetValue("time_left", time_left);
-		
-		
-		char effect_name[255];
-		active_effect.GetString("effect_name", effect_name, sizeof(effect_name));
-		
-		char panel_text[255];
-		bool is_timed_effect;
-		active_effect.GetValue("is_timed_effect", is_timed_effect);
-		if (is_timed_effect)
-		{
-			Format(panel_text, sizeof(panel_text), "%s (%d)", effect_name, time_left);
-		}	
-		else
-		{
-			Format(panel_text, sizeof(panel_text), "%s", effect_name);
-		}
-		p.DrawText(panel_text);
-		
-		if (time_left == 1)
+
+		if (time_left == 0)
 		{
 			g_active_effects.Erase(i);
+			StopEffect(active_effect);
 			delete active_effect;
 			continue;
 		}
 		active_effect.SetValue("time_left", time_left - 1);
 	}
-	
 	no_active_effects = g_active_effects.Length;
 	
 	for (int i = 1; i <= MaxClients; i++)
@@ -272,4 +251,47 @@ public Action Timer_UpdatePanel(Handle timer, any unused)
 	delete p;
 
 	return Plugin_Handled;
+}
+
+void DrawProgressBarPanelText(Panel panel, float fullness)
+{
+	char pbar[P_BAR_LENGTH + 1];
+	pbar[P_BAR_LENGTH] = 0;
+	int pbar_fullness = RoundToNearest(fullness * P_BAR_LENGTH);
+	for (int i = 0; i < P_BAR_LENGTH; i++)
+	{
+		if (i < pbar_fullness)
+		{
+			pbar[i] = '#';
+		}
+		else
+		{
+			pbar[i] = '_';
+		}
+	}
+	panel.DrawText(pbar);
+}
+
+void DrawActiveEffectPanelText(Panel panel, StringMap active_effect)
+{
+	int time_left;
+	active_effect.GetValue("time_left", time_left);
+	
+	char effect_name[255];
+	active_effect.GetString("name", effect_name, sizeof(effect_name));
+	
+	bool is_timed_effect;
+	active_effect.GetValue("is_timed_effect", is_timed_effect);
+
+	char panel_text[255];
+	if (is_timed_effect)
+	{
+		Format(panel_text, sizeof(panel_text), "%s (%d)", effect_name, time_left);
+	}	
+	else
+	{
+		Format(panel_text, sizeof(panel_text), "%s", effect_name);
+	}
+
+	panel.DrawText(panel_text);
 }
