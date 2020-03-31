@@ -57,8 +57,6 @@ public void OnPluginStart()
 	g_time_between_effects.AddChangeHook(Cvar_TimeBetweenEffectsChanged);
 	g_enabled.AddChangeHook(Cvar_EnabledChanged);
 	HookEvent("server_cvar", Event_Cvar, EventHookMode_Pre);
-	HookEvent("round_start", Event_RoundStart, EventHookMode_Post);
-	HookEvent("round_end", Event_RoundEnd, EventHookMode_Pre);
 	g_effect_timer = CreateTimer(g_time_between_effects.FloatValue, Timer_StartRandomEffect, _, TIMER_REPEAT);
 	g_panel_timer = CreateTimer(PANEL_UPDATE_RATE, Timer_UpdatePanel, _, TIMER_REPEAT);
 	
@@ -226,7 +224,8 @@ public Action Timer_UpdatePanel(Handle timer, any unused)
 	
 	for (int i = 1; i <= MaxClients; i++)
 	{
-		if (IsClientInGame(i))
+		// If a menu is open then don't show the panel
+		if (IsClientInGame(i) && (GetClientMenu(i) == MenuSource_RawPanel || GetClientMenu(i) == MenuSource_None))
 		{
 			p.Send(i, Panel_DoNothing, RoundToFloor(PANEL_UPDATE_RATE) + 1);
 		}
