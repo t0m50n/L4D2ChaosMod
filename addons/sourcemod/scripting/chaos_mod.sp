@@ -35,8 +35,6 @@ ConVar g_short_time_duration;
 ConVar g_normal_time_duration;
 ConVar g_long_time_duration;
 
-bool g_round_started = false;
-
 #include "parse.sp"
 
 public void OnPluginStart()
@@ -69,20 +67,6 @@ public void OnPluginStart()
 	#if defined DEBUG
 		RegAdminCmd("chaosmod_effect", Command_Start_Effect, ADMFLAG_GENERIC, "Activates a specific effect");
 	#endif
-}
-
-public Action Event_RoundStart(Event event, const char[] name, bool dontBroadcast)
-{
-	g_round_started = true;
-
-	return Plugin_Continue;
-}
-
-public Action Event_RoundEnd(Event event, const char[] name, bool dontBroadcast)
-{
-	g_round_started = false;
-
-	return Plugin_Continue;
 }
 
 public Action Event_Cvar(Event event, const char[] name, bool dontBroadcast)
@@ -182,7 +166,7 @@ void StopEffect(StringMap active_effect)
 
 public Action Timer_StartRandomEffect(Handle timer)
 {
-	if (!g_enabled.BoolValue || !g_round_started)
+	if (!g_enabled.BoolValue)
 	{
 		return Plugin_Handled;
 	}
