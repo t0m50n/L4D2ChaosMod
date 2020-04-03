@@ -50,7 +50,7 @@ let effects_tree = {
 				{
 					text: "Dissolve Infected on Death",
 					start: "sm_cvarsilent l4d_dissolve_allow 1",
-					end: "sm_cvarsilent l4d_dissolve_allow 0",
+					end: "exec sourcemod/l4d_dissolve_infected",
 					active_time: "normal"
 				},
 				{

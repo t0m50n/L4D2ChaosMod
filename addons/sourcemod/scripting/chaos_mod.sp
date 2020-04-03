@@ -21,6 +21,7 @@ public Plugin myinfo =
 #define EFFECTS_PATH "configs/effects.cfg"
 #define P_BAR_LENGTH 36
 #define PANEL_UPDATE_RATE 1.0
+#define VOTE_DURATION 20
 
 ArrayList g_effects;
 ArrayList g_active_effects;
@@ -54,6 +55,7 @@ public void OnPluginStart()
 	g_effect_durations.SetValue("long", g_long_time_duration);
 	g_effects = Parse_KeyValueFile(EFFECTS_PATH);
 
+	RegAdminCmd("chaosmod_vote", Command_Vote, ADMFLAG_GENERIC, "Starts vote to enable/disable chaosmod");
 	g_time_between_effects.AddChangeHook(Cvar_TimeBetweenEffectsChanged);
 	g_enabled.AddChangeHook(Cvar_EnabledChanged);
 	HookEvent("server_cvar", Event_Cvar, EventHookMode_Pre);
@@ -104,6 +106,46 @@ public void Cvar_EnabledChanged(ConVar convar, char[] oldValue, char[] newValue)
 }
 
 public int Panel_DoNothing(Menu menu, MenuAction action, int param1, int param2) {}
+
+public Action Command_Vote(int client, int args)
+{
+	if (IsVoteInProgress())
+	{
+		ReplyToCommand(client, "[SM] Vote in Progress");
+		return Plugin_Handled;
+	}
+
+	LogAction(client, -1, "\"%L\" initiated a chaosmod vote.", client);
+	ShowActivity2(client, "[SM] Initiate Chaos Mod Vote");
+
+	Menu menu = new Menu(Vote_Callback);
+	menu.SetTitle("%s Chaos Mod?", g_enabled.BoolValue ? "Disable": "Enable");
+	menu.AddItem(g_enabled.BoolValue ? "0": "1", "Yes");
+	menu.AddItem("no", "No");
+	menu.ExitButton = false;
+	menu.DisplayVoteToAll(VOTE_DURATION);
+
+	return Plugin_Handled;
+}
+
+public int Vote_Callback(Menu menu, MenuAction action, int param1, int param2)
+{
+	if (action == MenuAction_End)
+	{
+		/* This is called after VoteEnd */
+		delete menu;
+	}
+	else if (action == MenuAction_VoteEnd)
+	{
+		/* 0=yes, 1=no */
+		if (param1 == 0)
+		{
+			char enable[64];
+			menu.GetItem(param1, enable, sizeof(enable));
+			g_enabled.SetString(enable);
+		}
+	}
+}
 
 public Action Command_Start_Effect(int client, int args)
 {
