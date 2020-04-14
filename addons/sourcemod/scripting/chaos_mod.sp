@@ -9,6 +9,10 @@
 #include <sourcemod>
 #include <sdktools>
 
+/* Make the admin menu plugin optional */
+#undef REQUIRE_PLUGIN
+#include <adminmenu>
+
 public Plugin myinfo = 
 {
 	name = "L4D2 Chaos Mod",
@@ -29,6 +33,8 @@ StringMap g_effect_durations;
 
 Handle g_effect_timer = INVALID_HANDLE;
 Handle g_panel_timer = INVALID_HANDLE;
+
+TopMenu g_admin_menu = null;
 
 ConVar g_enabled;
 ConVar g_time_between_effects;
@@ -61,12 +67,74 @@ public void OnPluginStart()
 	HookEvent("server_cvar", Event_Cvar, EventHookMode_Pre);
 	g_effect_timer = CreateTimer(g_time_between_effects.FloatValue, Timer_StartRandomEffect, _, TIMER_REPEAT);
 	g_panel_timer = CreateTimer(PANEL_UPDATE_RATE, Timer_UpdatePanel, _, TIMER_REPEAT);
+
+	/* See if the menu plugin is already ready */
+	TopMenu topmenu;
+	if (LibraryExists("adminmenu") && ((topmenu = GetAdminTopMenu()) != null))
+	{
+		/* If so, manually fire the callback */
+		OnAdminMenuReady(topmenu);
+	}
 	
 	AutoExecConfig(true);
 	
 	#if defined DEBUG
 		RegAdminCmd("chaosmod_effect", Command_Start_Effect, ADMFLAG_GENERIC, "Activates a specific effect");
 	#endif
+}
+
+public void OnLibraryRemoved(const char[] name)
+{
+	if (StrEqual(name, "adminmenu", false))
+	{
+		g_admin_menu = null;
+	}
+}
+
+public void OnAdminMenuReady(Handle aTopMenu)
+{
+	TopMenu topmenu = TopMenu.FromHandle(aTopMenu);
+ 
+	/* Block us from being called twice */
+	if (topmenu == g_admin_menu)
+	{
+		return;
+	}
+ 
+	g_admin_menu = topmenu;
+ 
+	/* If the category is third party, it will have its own unique name. */
+	TopMenuObject voting_commands = FindTopMenuCategory(g_admin_menu, ADMINMENU_VOTINGCOMMANDS);
+ 
+	if (voting_commands == INVALID_TOPMENUOBJECT)
+	{
+		/* Error! */
+		return;
+	}
+
+	g_admin_menu.AddItem("chaosmod_vote", AdminMenu_ChaosModVote, voting_commands, "chaosmod_vote", ADMFLAG_VOTE);
+}
+
+public void AdminMenu_ChaosModVote(TopMenu topmenu, 
+			TopMenuAction action,
+			TopMenuObject object_id,
+			int param,
+			char[] buffer,
+			int maxlength)
+{
+	if (action == TopMenuAction_DisplayOption)
+	{
+		Format(buffer, maxlength, "Chaos Mod Vote");
+	}
+	else if (action == TopMenuAction_SelectOption)
+	{
+		Command_Vote(param, 0);
+	}
+	else if (action == TopMenuAction_DrawOption)
+	{	
+		/* disable this option if a vote is already running */
+		buffer[0] = !IsNewVoteAllowed() ? ITEMDRAW_IGNORE : ITEMDRAW_DEFAULT;
+	}
 }
 
 public Action Event_Cvar(Event event, const char[] name, bool dontBroadcast)
@@ -116,7 +184,7 @@ public Action Command_Vote(int client, int args)
 	}
 
 	LogAction(client, -1, "\"%L\" initiated a chaosmod vote.", client);
-	ShowActivity2(client, "[SM] Initiate Chaos Mod Vote");
+	ShowActivity2(client, "[SM] ", "Initiate Chaos Mod Vote");
 
 	Menu menu = new Menu(Vote_Callback);
 	menu.SetTitle("%s Chaos Mod?", g_enabled.BoolValue ? "Disable": "Enable");
