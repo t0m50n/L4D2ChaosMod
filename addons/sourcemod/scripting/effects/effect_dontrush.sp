@@ -1,10 +1,12 @@
 float g_dontrush_tele_pos[3];
+int g_saferoom_door_ent;
 bool g_dontrush_supported;
 
 public void Effect_DontRush_OnMapStart()
 {
 	g_dontrush_supported = true;
 	int tel_ent = -1;
+	g_saferoom_door_ent = -1;
 	
 	do
 	{
@@ -13,6 +15,8 @@ public void Effect_DontRush_OnMapStart()
 	
 	if (tel_ent >= 0)
 	{
+		g_saferoom_door_ent = tel_ent;
+
 		float door_ent_pos[3];
 		GetEntPropVector(tel_ent, Prop_Send, "m_vecOrigin", door_ent_pos);
 		
@@ -70,6 +74,11 @@ void DontRush(int target)
 	if (!IsClientInGame(target) || !IsPlayerAlive(target))
 	{
 		return;
+	}
+	if (g_saferoom_door_ent > 0)
+	{
+		RemoveEntity(g_saferoom_door_ent);
+		g_saferoom_door_ent = -1;
 	}
 	TeleportEntity(target, g_dontrush_tele_pos, NULL_VECTOR, NULL_VECTOR);
 }

@@ -58,6 +58,12 @@ let effects_tree = {
 					start: "sm_entityrain @all weapon_gascan 10",
 					end: "",
 					active_time: "none"
+				},
+				{
+					text: "Ice Rink",
+					start: "exec sourcemod/chaosmod/ice_rink_start",
+					end: "exec sourcemod/chaosmod/ice_rink_end",
+					active_time: "normal"
 				}
 			]
 		},
@@ -210,7 +216,7 @@ let effects_tree = {
 				{
 					text: "Taaank",
 					start: "exec sourcemod/chaosmod/taank_start",
-					end: "exec sourcemod/l4d2_autoIS",
+					end: "exec sourcemod/l4d2_autoIS; sm_slay @tanks",
 					active_time: "normal"
 				},
 				{
