@@ -8,7 +8,7 @@ public Action Command_EntityRain(int client, int args)
 	int target_list[MAXPLAYERS];
 			
 	int target_count = CommandHandler(
-			client, args, "[SM] Usage: sm_entityrain <target> <entity name> [count]",
+			client, args, "[SM] Usage: chaosmod_entityrain <target> <entity name> [count]",
 			2, target_list, MAXPLAYERS);
 	
 	if (target_count < 0)

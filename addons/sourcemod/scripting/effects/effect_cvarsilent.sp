@@ -2,7 +2,7 @@ public Action Command_CvarSilent(int client, int args)
 {
 	if(args < 2)
 	{
-		ReplyToCommand(client, "[SM] Usage: sm_cvarsilent <cvar> <value>");
+		ReplyToCommand(client, "[SM] Usage: chaosmod_cvar <cvar> <value>");
 		return Plugin_Handled;
 	}
 	

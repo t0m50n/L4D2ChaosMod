@@ -33,6 +33,7 @@ Handle g_sdk_set_temp_hp = INVALID_HANDLE;
 #include "effects\effect_entityrain.sp"
 #include "effects\effect_cheat.sp"
 #include "effects\effect_cvarsilent.sp"
+#include "effects\effect_zspeed.sp"
 
 public void OnPluginStart()
 {
@@ -45,6 +46,7 @@ public void OnPluginStart()
 	RegAdminCmd("chaosmod_entityrain", Command_EntityRain, ADMFLAG_ROOT, "Will rain the specified entity");
 	RegAdminCmd("chaosmod_cheat", Command_Cheat, ADMFLAG_ROOT, "Runs cheat commands with sv_cheats 0");
 	RegAdminCmd("chaosmod_cvar", Command_CvarSilent, ADMFLAG_ROOT, "Changes cvar without notifying clients");
+	RegAdminCmd("chaosmod_zspeed", Command_ZSpeed, ADMFLAG_ROOT, "Changes speed of the infected");
 
 	LoadTranslations("common.phrases.txt");
 	

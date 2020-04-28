@@ -6,7 +6,7 @@ public Action Command_VomitPlayer(int client, int args)
 	int target_list[MAXPLAYERS];
 			
 	int target_count = CommandHandler(
-			client, args, "[SM] Usage: sm_vomitplayer <#userid|name>",
+			client, args, "[SM] Usage: chaosmod_vomitplayer <#userid|name>",
 			1, target_list, MAXPLAYERS);
 	
 	if (target_count < 0)

@@ -53,7 +53,7 @@ public Action Command_DontRush(int client, int args)
 	int target_list[MAXPLAYERS];
 			
 	int target_count = CommandHandler(
-			client, args, "[SM] Usage: sm_dontrush <#userid|name>",
+			client, args, "[SM] Usage: chaosmod_dontrush <#userid|name>",
 			1, target_list, MAXPLAYERS);
 	
 	if (target_count < 0)

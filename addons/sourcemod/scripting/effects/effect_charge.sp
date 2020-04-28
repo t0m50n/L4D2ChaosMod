@@ -6,7 +6,7 @@ public Action Command_Charge(int client, int args)
 	int target_list[MAXPLAYERS];
 			
 	int target_count = CommandHandler(
-			client, args, "[SM] Usage: sm_charge <#userid|name> <velocity>",
+			client, args, "[SM] Usage: chaosmod_charge <#userid|name> <velocity>",
 			2, target_list, MAXPLAYERS);
 	
 	if (target_count < 0)

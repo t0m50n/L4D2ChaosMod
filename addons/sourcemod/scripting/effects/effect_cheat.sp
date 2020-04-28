@@ -2,7 +2,7 @@ public Action Command_Cheat(int client, int args)
 {
 	if(args < 1)
 	{
-		ReplyToCommand(client, "[SM] Usage: sm_cheat <command>");
+		ReplyToCommand(client, "[SM] Usage: chaosmod_cheat <command>");
 		return Plugin_Handled;
 	}
 	
