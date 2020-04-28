@@ -36,15 +36,15 @@ Handle g_sdk_set_temp_hp = INVALID_HANDLE;
 
 public void OnPluginStart()
 {
-	RegAdminCmd("sm_charge", Command_Charge, ADMFLAG_ROOT, "Will launch a survivor far away");
-	RegAdminCmd("sm_dontrush", Command_DontRush, ADMFLAG_ROOT, "Forces a player to re-appear in the starting safe zone");
-	RegAdminCmd("sm_sethpplayer", Command_SetHpPlayer, ADMFLAG_ROOT, "Set a player's health");
-	RegAdminCmd("sm_settemphpplayer", Command_SetTempHpPlayer, ADMFLAG_ROOT, "Set a player's temporary health");
-	RegAdminCmd("sm_vomitplayer", Command_VomitPlayer, ADMFLAG_ROOT, "Vomits the desired player");
-	RegAdminCmd("sm_sizeplayer", Command_SizePlayer, ADMFLAG_ROOT, "Resize a player's model (Most likely, their pants)");
-	RegAdminCmd("sm_entityrain", Command_EntityRain, ADMFLAG_ROOT, "Will rain the specified entity");
-	RegAdminCmd("sm_cheat", Command_Cheat, ADMFLAG_ROOT, "Runs cheat commands with sv_cheats 0");
-	RegAdminCmd("sm_cvarsilent", Command_CvarSilent, ADMFLAG_ROOT, "Changes cvar without notifying clients");
+	RegAdminCmd("chaosmod_charge", Command_Charge, ADMFLAG_ROOT, "Will launch a survivor far away");
+	RegAdminCmd("chaosmod_dontrush", Command_DontRush, ADMFLAG_ROOT, "Forces a player to re-appear in the starting safe zone");
+	RegAdminCmd("chaosmod_sethpplayer", Command_SetHpPlayer, ADMFLAG_ROOT, "Set a player's health");
+	RegAdminCmd("chaosmod_settemphpplayer", Command_SetTempHpPlayer, ADMFLAG_ROOT, "Set a player's temporary health");
+	RegAdminCmd("chaosmod_vomitplayer", Command_VomitPlayer, ADMFLAG_ROOT, "Vomits the desired player");
+	RegAdminCmd("chaosmod_sizeplayer", Command_SizePlayer, ADMFLAG_ROOT, "Resize a player's model (Most likely, their pants)");
+	RegAdminCmd("chaosmod_entityrain", Command_EntityRain, ADMFLAG_ROOT, "Will rain the specified entity");
+	RegAdminCmd("chaosmod_cheat", Command_Cheat, ADMFLAG_ROOT, "Runs cheat commands with sv_cheats 0");
+	RegAdminCmd("chaosmod_cvar", Command_CvarSilent, ADMFLAG_ROOT, "Changes cvar without notifying clients");
 
 	LoadTranslations("common.phrases.txt");
 	

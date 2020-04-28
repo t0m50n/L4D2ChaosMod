@@ -13,26 +13,26 @@ let effects_tree = {
 			children: [
 				{
 					text: "Half Gravity",
-					start: "sm_cvarsilent sv_gravity 400",
-					end: "sm_cvarsilent sv_gravity 800",
+					start: "chaosmod_cvar sv_gravity 400",
+					end: "chaosmod_cvar sv_gravity 800",
 					active_time: "normal"
 				},
 				{
 					text: "Double Gravity",
-					start: "sm_cvarsilent sv_gravity 1600",
-					end: "sm_cvarsilent sv_gravity 800",
+					start: "chaosmod_cvar sv_gravity 1600",
+					end: "chaosmod_cvar sv_gravity 800",
 					active_time: "normal"
 				},
 				{
 					text: "Quarter Gravity",
-					start: "sm_cvarsilent sv_gravity 200",
-					end: "sm_cvarsilent sv_gravity 800",
+					start: "chaosmod_cvar sv_gravity 200",
+					end: "chaosmod_cvar sv_gravity 800",
 					active_time: "normal"
 				},
 				{
 					text: "Zero Gravity",
-					start: "sm_cvarsilent sv_gravity 1",
-					end: "sm_cvarsilent sv_gravity 800",
+					start: "chaosmod_cvar sv_gravity 1",
+					end: "chaosmod_cvar sv_gravity 800",
 					active_time: "short"
 				},
 				{
@@ -43,19 +43,19 @@ let effects_tree = {
 				},
 				{
 					text: "Throw Everyone",
-					start: "sm_charge @all 600",
+					start: "chaosmod_charge @all 600",
 					end: "",
 					active_time: "none"
 				},
 				{
 					text: "Dissolve Infected on Death",
-					start: "sm_cvarsilent l4d_dissolve_allow 1",
+					start: "chaosmod_cvar l4d_dissolve_allow 1",
 					end: "exec sourcemod/l4d_dissolve_infected",
 					active_time: "normal"
 				},
 				{
 					text: "Raining Gascans",
-					start: "sm_entityrain @all weapon_gascan 10",
+					start: "chaosmod_entityrain @all weapon_gascan 10",
 					end: "",
 					active_time: "none"
 				},
@@ -75,20 +75,20 @@ let effects_tree = {
 			children: [
 				{
 					text: "Super Crouch",
-					start: "sm_cvarsilent survivor_crouch_speed 400",
-					end: "sm_cvarsilent survivor_crouch_speed 75",
+					start: "chaosmod_cvar survivor_crouch_speed 400",
+					end: "chaosmod_cvar survivor_crouch_speed 75",
 					active_time: "short"
 				},
 				{
 					text: "Infinite Ammo",
-					start:"sm_cvarsilent sv_infinite_ammo 1",
-					end:"sm_cvarsilent sv_infinite_ammo 0",
+					start:"chaosmod_cvar sv_infinite_ammo 1",
+					end:"chaosmod_cvar sv_infinite_ammo 0",
 					active_time: "normal"
 				},
 				{
 					text: "Bots Keep Shooting",
-					start: "sm_cvarsilent sb_open_fire 1",
-					end: "sm_cvarsilent sb_open_fire 0",
+					start: "chaosmod_cvar sb_open_fire 1",
+					end: "chaosmod_cvar sb_open_fire 0",
 					active_time: "normal"
 				},
 				{
@@ -117,26 +117,26 @@ let effects_tree = {
 				},
 				{
 					text: "Teleport Back to Saferoom",
-					start: "sm_dontrush @survivors",
+					start: "chaosmod_dontrush @survivors",
 					end: "",
 					active_time: "none"
 				},
 				{
 					text: "Big Pants",
-					start: "sm_sizeplayer @survivors 2.5",
-					end: "sm_sizeplayer @survivors 1",
+					start: "chaosmod_sizeplayer @survivors 2.5",
+					end: "chaosmod_sizeplayer @survivors 1",
 					active_time: "normal"
 				},
 				{
 					text: "Vomit Survivors",
-					start: "sm_vomitplayer @survivors",
+					start: "chaosmod_vomitplayer @survivors",
 					end: "",
 					active_time: "none"
 				},
 				{
 					text: "1 HP Survivors",
-					start: "sm_sethpplayer @survivors 1; sm_settemphpplayer 0",
-					end: "sm_sethpplayer @survivors 80; sm_settemphpplayer 0",
+					start: "chaosmod_sethpplayer @survivors 1; chaosmod_settemphpplayer 0",
+					end: "chaosmod_sethpplayer @survivors 80; chaosmod_settemphpplayer 0",
 					active_time: "normal"
 				},
 				{
@@ -179,14 +179,14 @@ let effects_tree = {
 			children: [
 				{
 					text: "Elderly Zombies",
-					start: "sm_cvarsilent z_speed 80",
-					end: "sm_cvarsilent z_speed 250",
+					start: "chaosmod_cvar z_speed 80",
+					end: "chaosmod_cvar z_speed 250",
 					active_time: "long"
 				},
 				{
 					text: "Marathon Zombies",
-					start: "sm_cvarsilent z_speed 500",
-					end: "sm_cvarsilent z_speed 250",
+					start: "chaosmod_cvar z_speed 500",
+					end: "chaosmod_cvar z_speed 250",
 					active_time: "long"
 				},
 				{
@@ -239,7 +239,7 @@ let effects_tree = {
 				},
 				{
 					text: "Raining Witches",
-					start: "sm_entityrain @all witch 2",
+					start: "chaosmod_entityrain @all witch 2",
 					end: "",
 					active_time: "none"
 				}
