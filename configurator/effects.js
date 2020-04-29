@@ -179,15 +179,15 @@ let effects_tree = {
 			children: [
 				{
 					text: "Elderly Zombies",
-					start: "chaosmod_cvar z_speed 80",
-					end: "chaosmod_cvar z_speed 250",
-					active_time: "long"
+					start: "chaosmod_zspeed 80",
+					end: "chaosmod_zspeed 250",
+					active_time: "normal"
 				},
 				{
 					text: "Marathon Zombies",
-					start: "chaosmod_cvar z_speed 500",
-					end: "chaosmod_cvar z_speed 250",
-					active_time: "long"
+					start: "exec sourcemod/chaosmod/marathon_zombies_start",
+					end: "exec sourcemod/chaosmod/marathon_zombies_end",
+					active_time: "normal"
 				},
 				{
 					text: "Endless Hordes",
