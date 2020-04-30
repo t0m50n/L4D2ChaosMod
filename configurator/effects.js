@@ -64,6 +64,12 @@ let effects_tree = {
 					start: "exec sourcemod/chaosmod/ice_rink_start",
 					end: "exec sourcemod/chaosmod/ice_rink_end",
 					active_time: "normal"
+				},
+				{
+					text: "Auto Bunnyhop",
+					start: "chaosmod_bhop_enabled 1",
+					end: "chaosmod_bhop_enabled 0",
+					active_time: "long"
 				}
 			]
 		},

@@ -1,6 +1,3 @@
-#define ANIM_CHARGER_BOUNCE 76
-#define CHARGE_INCAP_TIME 3.0
-
 public Action Command_ZSpeed(int client, int args)
 {
 	if (args < 1)

@@ -2,7 +2,7 @@
 #pragma newdecls required
 
 #define PLUGIN_AUTHOR "T0M50N"
-#define PLUGIN_VERSION "1.0.0"
+#define PLUGIN_VERSION "1.0.2"
 
 #include <sourcemod>
 #include <sdktools>
@@ -24,6 +24,8 @@ Handle g_sdk_vomit_survivor = INVALID_HANDLE;
 Handle g_sdk_vomit_infected = INVALID_HANDLE;
 Handle g_sdk_set_temp_hp = INVALID_HANDLE;
 
+ConVar g_bhop;
+
 #include "effects\effect_charge.sp"
 #include "effects\effect_dontrush.sp"
 #include "effects\effect_sethpplayer.sp"
@@ -34,9 +36,13 @@ Handle g_sdk_set_temp_hp = INVALID_HANDLE;
 #include "effects\effect_cheat.sp"
 #include "effects\effect_cvarsilent.sp"
 #include "effects\effect_zspeed.sp"
+#include "effects\effect_bhop.sp"
 
 public void OnPluginStart()
 {
+	CreateConVar("chaosmod_version", PLUGIN_VERSION, " Version of Chaos Mod on this server ", FCVAR_SPONLY|FCVAR_DONTRECORD);
+	g_bhop = CreateConVar("chaosmod_bhop_enabled", "0", "Enable/Disable automatic bunny hopping", FCVAR_NOTIFY);
+
 	RegAdminCmd("chaosmod_charge", Command_Charge, ADMFLAG_ROOT, "Will launch a survivor far away");
 	RegAdminCmd("chaosmod_dontrush", Command_DontRush, ADMFLAG_ROOT, "Forces a player to re-appear in the starting safe zone");
 	RegAdminCmd("chaosmod_sethpplayer", Command_SetHpPlayer, ADMFLAG_ROOT, "Set a player's health");
@@ -101,6 +107,12 @@ public void OnPluginStart()
 public void OnMapStart()
 {
 	Effect_DontRush_OnMapStart();
+}
+
+public Action OnPlayerRunCmd(int client, int& buttons)
+{
+	Effect_Bhop_OnPlayerRunCmd(client, buttons);
+	return Plugin_Continue;
 }
 
 int CommandHandler(int client, int args, const char[] usage, int no_args, int[] target_list, int max_targets)
