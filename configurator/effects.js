@@ -70,6 +70,30 @@ let effects_tree = {
 					start: "chaosmod_bhop_enabled 1",
 					end: "chaosmod_bhop_enabled 0",
 					active_time: "long"
+				},
+				{
+					text: "Rapid Fire",
+					start: "chaosmod_firerate 1.47",
+					end: "chaosmod_firerate 1",
+					active_time: "normal"
+				},
+				{
+					text: "Slow Fire",
+					start: "chaosmod_firerate 0.68",
+					end: "chaosmod_firerate 1",
+					active_time: "normal"
+				},
+				{
+					text: "Fast Reload",
+					start: "chaosmod_reloadspeed 2.0",
+					end: "chaosmod_reloadspeed 1",
+					active_time: "normal"
+				},
+				{
+					text: "Slow Reload",
+					start: "chaosmod_reloadspeed 0.5",
+					end: "chaosmod_reloadspeed 1",
+					active_time: "normal"
 				}
 			]
 		},

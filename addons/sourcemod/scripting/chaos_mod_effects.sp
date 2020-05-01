@@ -6,6 +6,7 @@
 
 #include <sourcemod>
 #include <sdktools>
+#include <weaponhandling>
 
 public Plugin myinfo = 
 {
@@ -25,6 +26,8 @@ Handle g_sdk_vomit_infected = INVALID_HANDLE;
 Handle g_sdk_set_temp_hp = INVALID_HANDLE;
 
 ConVar g_bhop;
+ConVar g_firerate;
+ConVar g_reloadspeed;
 
 #include "effects\effect_charge.sp"
 #include "effects\effect_dontrush.sp"
@@ -37,11 +40,15 @@ ConVar g_bhop;
 #include "effects\effect_cvarsilent.sp"
 #include "effects\effect_zspeed.sp"
 #include "effects\effect_bhop.sp"
+#include "effects\effect_firerate.sp"
+#include "effects\effect_reloadspeed.sp"
 
 public void OnPluginStart()
 {
 	CreateConVar("chaosmod_version", PLUGIN_VERSION, " Version of Chaos Mod on this server ", FCVAR_SPONLY|FCVAR_DONTRECORD);
 	g_bhop = CreateConVar("chaosmod_bhop_enabled", "0", "Enable/Disable automatic bunny hopping", FCVAR_NOTIFY);
+	g_firerate = CreateConVar("chaosmod_firerate", "1", "Weapon firing rate modifier", FCVAR_NOTIFY, true, 0.1);
+	g_reloadspeed = CreateConVar("chaosmod_reloadspeed", "1", "Weapon reload speed modifier", FCVAR_NOTIFY, true, 0.1);
 
 	RegAdminCmd("chaosmod_charge", Command_Charge, ADMFLAG_ROOT, "Will launch a survivor far away");
 	RegAdminCmd("chaosmod_dontrush", Command_DontRush, ADMFLAG_ROOT, "Forces a player to re-appear in the starting safe zone");

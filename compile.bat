@@ -13,6 +13,7 @@ if "%~1"=="tp" (
 	"%SP_COMPILER_PATH%" "addons\sourcemod\scripting\security_entity_limit.sp"
 	"%SP_COMPILER_PATH%" "addons\sourcemod\scripting\l4d2_autoIS.sp"
 	"%SP_COMPILER_PATH%" "addons\sourcemod\scripting\left4dhooks.sp"
+	"%SP_COMPILER_PATH%" "addons\sourcemod\scripting\WeaponHandling.sp"
 )
 
 move /y "*.smx" "%SCRIPT_DIR%\..\plugins\"
