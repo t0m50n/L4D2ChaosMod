@@ -42,6 +42,7 @@ ConVar g_reloadspeed;
 #include "effects\effect_bhop.sp"
 #include "effects\effect_firerate.sp"
 #include "effects\effect_reloadspeed.sp"
+#include "effects\effect_timescale.sp"
 
 public void OnPluginStart()
 {
@@ -60,6 +61,7 @@ public void OnPluginStart()
 	RegAdminCmd("chaosmod_cheat", Command_Cheat, ADMFLAG_ROOT, "Runs cheat commands with sv_cheats 0");
 	RegAdminCmd("chaosmod_cvar", Command_CvarSilent, ADMFLAG_ROOT, "Changes cvar without notifying clients");
 	RegAdminCmd("chaosmod_zspeed", Command_ZSpeed, ADMFLAG_ROOT, "Changes speed of the infected");
+	RegAdminCmd("chaosmod_timescale", Command_TimeScale, ADMFLAG_ROOT, "Set game speed of host and client");
 
 	LoadTranslations("common.phrases.txt");
 	

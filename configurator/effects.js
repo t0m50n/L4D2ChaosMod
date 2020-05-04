@@ -94,6 +94,18 @@ let effects_tree = {
 					start: "chaosmod_reloadspeed 0.5",
 					end: "chaosmod_reloadspeed 1",
 					active_time: "normal"
+				},
+				{
+					text: "Half Speed",
+					start: "chaosmod_timescale 0.5",
+					end: "chaosmod_timescale 1",
+					active_time: "short"
+				},
+				{
+					text: "Double Speed",
+					start: "chaosmod_timescale 2",
+					end: "chaosmod_timescale 1",
+					active_time: "long"
 				}
 			]
 		},
