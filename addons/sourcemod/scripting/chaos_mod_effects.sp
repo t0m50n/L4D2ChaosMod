@@ -43,6 +43,7 @@ ConVar g_reloadspeed;
 #include "effects\effect_firerate.sp"
 #include "effects\effect_reloadspeed.sp"
 #include "effects\effect_timescale.sp"
+#include "effects\effect_planecrash.sp"
 
 public void OnPluginStart()
 {
@@ -62,6 +63,7 @@ public void OnPluginStart()
 	RegAdminCmd("chaosmod_cvar", Command_CvarSilent, ADMFLAG_ROOT, "Changes cvar without notifying clients");
 	RegAdminCmd("chaosmod_zspeed", Command_ZSpeed, ADMFLAG_ROOT, "Changes speed of the infected");
 	RegAdminCmd("chaosmod_timescale", Command_TimeScale, ADMFLAG_ROOT, "Set game speed of host and client");
+	RegAdminCmd("chaosmod_planecrash", Command_PlaneCrash, ADMFLAG_ROOT, "Causes a plane to crash infront of the player");
 
 	LoadTranslations("common.phrases.txt");
 	
@@ -116,6 +118,7 @@ public void OnPluginStart()
 public void OnMapStart()
 {
 	Effect_DontRush_OnMapStart();
+	Effect_PlaneCrash_OnMapStart();
 }
 
 public Action OnPlayerRunCmd(int client, int& buttons)

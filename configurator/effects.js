@@ -106,6 +106,12 @@ let effects_tree = {
 					start: "chaosmod_timescale 2",
 					end: "chaosmod_timescale 1",
 					active_time: "long"
+				},
+				{
+					text: "Plane Crash",
+					start: "chaosmod_planecrash @survivors",
+					end: "",
+					active_time: "none"
 				}
 			]
 		},
@@ -119,7 +125,7 @@ let effects_tree = {
 					text: "Super Crouch",
 					start: "chaosmod_cvar survivor_crouch_speed 400",
 					end: "chaosmod_cvar survivor_crouch_speed 75",
-					active_time: "short"
+					active_time: "normal"
 				},
 				{
 					text: "Infinite Ammo",

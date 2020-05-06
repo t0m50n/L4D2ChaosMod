@@ -10,3 +10,4 @@
 * [vdfplus](https://github.com/RoyalBingBong/vdfplus) by RoyalBingBong. Used in the configurator.
 * [Weapon/Zombie Spawner](https://forums.alliedmods.net/showthread.php?t=109659) by Zuko. Used plugin to create multiple effects.
 * [Weapon Damage Mod](https://forums.alliedmods.net/showthread.php?t=116668) by AtomicStryker. Used plugin to create multiple effects.
+* [Plane Crash](https://forums.alliedmods.net/showthread.php?t=181517) by SilverShot.
