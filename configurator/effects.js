@@ -72,30 +72,6 @@ let effects_tree = {
 					active_time: "long"
 				},
 				{
-					text: "Rapid Fire",
-					start: "chaosmod_firerate 1.47",
-					end: "chaosmod_firerate 1",
-					active_time: "normal"
-				},
-				{
-					text: "Slow Fire",
-					start: "chaosmod_firerate 0.68",
-					end: "chaosmod_firerate 1",
-					active_time: "normal"
-				},
-				{
-					text: "Fast Reload",
-					start: "chaosmod_reloadspeed 2.0",
-					end: "chaosmod_reloadspeed 1",
-					active_time: "normal"
-				},
-				{
-					text: "Slow Reload",
-					start: "chaosmod_reloadspeed 0.5",
-					end: "chaosmod_reloadspeed 1",
-					active_time: "normal"
-				},
-				{
 					text: "Half Speed",
 					start: "chaosmod_timescale 0.5",
 					end: "chaosmod_timescale 1",
@@ -228,7 +204,31 @@ let effects_tree = {
 					start: "exec sourcemod/chaosmod/low_weapon_damage_start",
 					end: "sm_damage_reset",
 					active_time: "normal"
-				}
+				},
+				{
+					text: "Rapid Fire",
+					start: "chaosmod_firerate 1.47",
+					end: "chaosmod_firerate 1",
+					active_time: "normal"
+				},
+				{
+					text: "Slow Fire",
+					start: "chaosmod_firerate 0.68",
+					end: "chaosmod_firerate 1",
+					active_time: "normal"
+				},
+				{
+					text: "Fast Reload",
+					start: "chaosmod_reloadspeed 2.0",
+					end: "chaosmod_reloadspeed 1",
+					active_time: "normal"
+				},
+				{
+					text: "Slow Reload",
+					start: "chaosmod_reloadspeed 0.5",
+					end: "chaosmod_reloadspeed 1",
+					active_time: "normal"
+				},
 			]
 		},
 		{
