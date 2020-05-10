@@ -112,7 +112,19 @@ let effects_tree = {
 					start: "chaosmod_planecrash @survivors",
 					end: "",
 					active_time: "none"
-				}
+				},
+				{
+					text: "High Ping",
+					start: "sm_cvar net_fakelag 500",
+					end: "sm_cvar net_fakelag 0",
+					active_time: "normal"
+				},
+				{
+					text: "Packet Loss",
+					start: "sm_cvar net_fakeloss 50",
+					end: "sm_cvar net_fakeloss 0",
+					active_time: "normal"
+				},
 			]
 		},
 		{
@@ -235,6 +247,18 @@ let effects_tree = {
 					text: "Marathon Zombies",
 					start: "exec sourcemod/chaosmod/marathon_zombies_start",
 					end: "exec sourcemod/chaosmod/marathon_zombies_end",
+					active_time: "normal"
+				},
+				{
+					text: "Baby Zombies",
+					start: "chaosmod_zsize 0.5",
+					end: "chaosmod_zsize 1",
+					active_time: "normal"
+				},
+				{
+					text: "Giant Zombies",
+					start: "chaosmod_zsize 2",
+					end: "chaosmod_zsize 1",
 					active_time: "normal"
 				},
 				{

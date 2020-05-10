@@ -44,6 +44,7 @@ ConVar g_reloadspeed;
 #include "effects\effect_reloadspeed.sp"
 #include "effects\effect_timescale.sp"
 #include "effects\effect_planecrash.sp"
+#include "effects\effect_zsize.sp"
 
 public void OnPluginStart()
 {
@@ -64,6 +65,7 @@ public void OnPluginStart()
 	RegAdminCmd("chaosmod_zspeed", Command_ZSpeed, ADMFLAG_ROOT, "Changes speed of the infected");
 	RegAdminCmd("chaosmod_timescale", Command_TimeScale, ADMFLAG_ROOT, "Set game speed of host and client");
 	RegAdminCmd("chaosmod_planecrash", Command_PlaneCrash, ADMFLAG_ROOT, "Causes a plane to crash infront of the player");
+	RegAdminCmd("chaosmod_zsize", Command_ZSize, ADMFLAG_ROOT, "Scale size of infected by a modifier");
 
 	LoadTranslations("common.phrases.txt");
 	
