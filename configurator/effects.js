@@ -91,14 +91,14 @@ let effects_tree = {
 				},
 				{
 					text: "High Ping",
-					start: "sm_cvar net_fakelag 500",
-					end: "sm_cvar net_fakelag 0",
+					start: "chaosmod_cvar net_fakelag 500",
+					end: "chaosmod_cvar net_fakelag 0",
 					active_time: "normal"
 				},
 				{
 					text: "Packet Loss",
-					start: "sm_cvar net_fakeloss 50",
-					end: "sm_cvar net_fakeloss 0",
+					start: "chaosmod_cvar net_fakeloss 50",
+					end: "chaosmod_cvar net_fakeloss 0",
 					active_time: "normal"
 				},
 			]
