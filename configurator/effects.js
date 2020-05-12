@@ -194,6 +194,12 @@ let effects_tree = {
 					active_time: "none"
 				},
 				{
+					text: "Give Defibrillators",
+					start: "sm_giveweapon @survivors defibrillator",
+					end: "",
+					active_time: "none"
+				},
+				{
 					text: "High Weapon Damage",
 					start: "exec sourcemod/chaosmod/high_weapon_damage_start.cfg",
 					end: "sm_damage_reset",
