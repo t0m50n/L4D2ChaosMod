@@ -235,6 +235,18 @@ let effects_tree = {
 					end: "chaosmod_reloadspeed 1",
 					active_time: "normal"
 				},
+				{
+					text: "High Fall Damage",
+					start: "chaosmod_cvar fall_speed_safe 1",
+					end: "chaosmod_cvar fall_speed_safe 560",
+					active_time: "normal"
+				},
+				{
+					text: "No Fall Damage",
+					start: "chaosmod_cvar fall_speed_fatal 9000",
+					end: "chaosmod_cvar fall_speed_fatal 720",
+					active_time: "normal"
+				},
 			]
 		},
 		{
@@ -320,6 +332,12 @@ let effects_tree = {
 					start: "chaosmod_entityrain @all witch 2",
 					end: "",
 					active_time: "none"
+				},
+				{
+					text: "Randomise special infected",
+					start: "chaosmod_randomisecvars si",
+					end: "chaosmod_randomisecvars si 1",
+					active_time: "long"
 				}
 			]
 		}
