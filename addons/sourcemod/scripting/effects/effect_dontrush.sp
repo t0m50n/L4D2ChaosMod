@@ -2,7 +2,7 @@ float g_dontrush_tele_pos[3];
 int g_saferoom_door_ent;
 bool g_dontrush_supported;
 
-public void Effect_DontRush_OnMapStart()
+public void Effect_DontRush_OnRoundStart()
 {
 	g_dontrush_supported = true;
 	int tel_ent = -1;

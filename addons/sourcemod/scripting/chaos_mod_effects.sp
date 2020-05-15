@@ -69,6 +69,8 @@ public void OnPluginStart()
 	RegAdminCmd("chaosmod_zsize", Command_ZSize, ADMFLAG_ROOT, "Scale size of infected by a modifier");
 	RegAdminCmd("chaosmod_randomisecvars", Command_RandomiseCvars, ADMFLAG_ROOT, "Randomly alter selected group of cvars");
 
+	HookEvent("round_start", Event_RoundStart, EventHookMode_Post);
+
 	LoadTranslations("common.phrases.txt");
 	
 	g_game_conf = LoadGameConfigFile("l4d2_custom_commands");
@@ -123,8 +125,12 @@ public void OnPluginStart()
 
 public void OnMapStart()
 {
-	Effect_DontRush_OnMapStart();
 	Effect_PlaneCrash_OnMapStart();
+}
+
+public void Event_RoundStart(Handle event, const char[] name, bool dontBroadcast)
+{
+	Effect_DontRush_OnRoundStart();
 }
 
 public Action OnPlayerRunCmd(int client, int& buttons)
