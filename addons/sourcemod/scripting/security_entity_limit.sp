@@ -40,7 +40,7 @@ public void OnPluginStart()
 	LogMessage("[SEL]Current version: %s\nPlugin made by Benoist3012!", PLUGIN_VERSION);
 	
 	HookEvent("round_start", Event_RoundStart, EventHookMode_Post);
-	HookEvent("teamplay_round_start", Event_RoundStart, EventHookMode_Post);
+	// HookEvent("teamplay_round_start", Event_RoundStart, EventHookMode_Post);
 }
 
 public void OnMapStart()
