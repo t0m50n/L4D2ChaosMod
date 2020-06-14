@@ -4,7 +4,7 @@
 // #define DEBUG
 
 #define PLUGIN_AUTHOR "T0M50N"
-#define PLUGIN_VERSION "1.0.3"
+#define PLUGIN_VERSION "1.1.0"
 
 #include <sourcemod>
 #include <sdktools>
@@ -26,10 +26,11 @@ public Plugin myinfo =
 #define P_BAR_LENGTH 36
 #define PANEL_UPDATE_RATE 1.0
 #define VOTE_DURATION 20
+#define EFFECT_CHOOSE_ATTEMPTS 20
 
 ArrayList g_effects;
 ArrayList g_active_effects;
-StringMap g_effect_durations;
+StringMap g_EFFECT_DURATIONS;
 
 Handle g_effect_timer = INVALID_HANDLE;
 Handle g_panel_timer = INVALID_HANDLE;
@@ -54,11 +55,11 @@ public void OnPluginStart()
 	g_long_time_duration = CreateConVar("chaosmod_long_time_duration", "120", "A long effect will be enabled for this many seconds", FCVAR_NOTIFY, true, 0.1);
 
 	g_active_effects = new ArrayList();
-	g_effect_durations = new StringMap();
-	g_effect_durations.SetValue("none", g_normal_time_duration);
-	g_effect_durations.SetValue("short", g_short_time_duration);
-	g_effect_durations.SetValue("normal", g_normal_time_duration);
-	g_effect_durations.SetValue("long", g_long_time_duration);
+	g_EFFECT_DURATIONS = new StringMap();
+	g_EFFECT_DURATIONS.SetValue("none", g_normal_time_duration);
+	g_EFFECT_DURATIONS.SetValue("short", g_short_time_duration);
+	g_EFFECT_DURATIONS.SetValue("normal", g_normal_time_duration);
+	g_EFFECT_DURATIONS.SetValue("long", g_long_time_duration);
 	g_effects = Parse_KeyValueFile(EFFECTS_PATH);
 
 	RegAdminCmd("chaosmod_vote", Command_Vote, ADMFLAG_GENERIC, "Starts vote to enable/disable chaosmod");
@@ -137,6 +138,9 @@ public void AdminMenu_ChaosModVote(TopMenu topmenu,
 	}
 }
 
+/*
+	Blocks cvar changes being announced while chaosmod is enabled
+*/
 public Action Event_Cvar(Event event, const char[] name, bool dontBroadcast)
 {
 	if (!g_enabled.BoolValue)
@@ -272,6 +276,32 @@ void StopEffect(StringMap active_effect)
 	ServerCommand(buffer);
 }
 
+StringMap AttemptChooseRandomEffect()
+{
+	int random_effect_i = GetRandomInt(0, g_effects.Length - 1);
+	StringMap effect = view_as<StringMap>(g_effects.Get(random_effect_i));
+
+	// Check if effect can be used on current map
+	ArrayList maps;
+	if (effect.GetValue("disable_on_maps", maps))
+	{
+		char current_map[64];
+		GetCurrentMap(current_map, sizeof(current_map));
+
+		for (int i = 0; i < maps.Length; i++)
+		{
+			char map[64];
+			maps.GetString(i, map, sizeof(map));
+			if (StrEqual(current_map, map))
+			{
+				return view_as<StringMap>(INVALID_HANDLE);
+			}
+		}
+	}
+
+	return effect;
+}
+
 public Action Timer_StartRandomEffect(Handle timer)
 {
 	if (!g_enabled.BoolValue)
@@ -279,8 +309,22 @@ public Action Timer_StartRandomEffect(Handle timer)
 		return Plugin_Handled;
 	}
 
-	int random_effect_i = GetRandomInt(0, g_effects.Length - 1);
-	StringMap effect = view_as<StringMap>(g_effects.Get(random_effect_i));
+	StringMap effect;
+	int i = 0;
+	while (i < EFFECT_CHOOSE_ATTEMPTS)
+	{
+		effect = AttemptChooseRandomEffect();
+		if (effect != INVALID_HANDLE)
+		{
+			break;
+		}
+		i++;
+	}
+
+	if (i == EFFECT_CHOOSE_ATTEMPTS)
+	{
+		SetFailState("Could not pick random effect meeting requirements.");
+	}
 	
 	StartEffect(effect);
 

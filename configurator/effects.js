@@ -155,7 +155,8 @@ let effects_tree = {
 					text: "Teleport Back to Saferoom",
 					start: "chaosmod_dontrush @survivors",
 					end: "",
-					active_time: "none"
+					active_time: "none",
+					disable_on_maps: "c1m4_atrium,c2m5_concert,c6m3_port,c7m3_port,c8m5_rooftop"
 				},
 				{
 					text: "Big Pants",

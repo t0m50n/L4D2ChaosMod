@@ -30,6 +30,22 @@ ArrayList Parse_KeyValueFile(const char[] path)
 		
 		kv.GetString("end", buffer, sizeof(buffer));
 		effect.SetString("end", buffer);
+
+		kv.GetString("disable_on_maps", buffer, sizeof(buffer), "");
+		if (strlen(buffer) != 0)
+		{
+			int no_maps = CountCharInString(buffer, ',') + 1;
+			char[][] maps_buffer = new char[no_maps][64];
+			ExplodeString(buffer, ",", maps_buffer, no_maps, 64);
+
+			ArrayList maps = new ArrayList(64, no_maps);
+			for (int i = 0; i < no_maps; i++)
+			{
+				maps.SetString(i, maps_buffer[i]);
+			}
+			
+			effect.SetValue("disable_on_maps", maps);
+		}
 		
 		kv.GetString("active_time", buffer, sizeof(buffer));
 		
@@ -59,9 +75,9 @@ ArrayList Parse_KeyValueFile(const char[] path)
 	return effects;
 }
 
-float Parse_ActiveTime(char[] active_time)
+float Parse_ActiveTime(const char[] active_time)
 {
-	StringMapSnapshot durations = g_effect_durations.Snapshot();
+	StringMapSnapshot durations = g_EFFECT_DURATIONS.Snapshot();
 	for (int i = 0; i < durations.Length; i++)
 	{
 		char duration_name[255];
@@ -70,7 +86,7 @@ float Parse_ActiveTime(char[] active_time)
 		{
 			delete durations;
 			ConVar c;
-			g_effect_durations.GetValue(duration_name, c);
+			g_EFFECT_DURATIONS.GetValue(duration_name, c);
 			return c.FloatValue;
 		}
 	}
@@ -83,3 +99,24 @@ float Parse_ActiveTime(char[] active_time)
 	}
 	return f;
 }
+
+/**
+ * Counts the number of occurences of a character in a string.
+ *
+ * @param str        String.
+ * @param c            Character to count.
+ * @return            The number of occurences of the character in the string.
+ */
+int CountCharInString(const char[] str, char c) {
+	int i = 0;
+	int count = 0;
+
+	while (str[i] != '\0') {
+		if (str[i] == c) {
+			count += 1;
+		}
+		i += 1;
+	}
+
+	return count;
+} 
