@@ -4,7 +4,7 @@
 // #define DEBUG
 
 #define PLUGIN_AUTHOR "T0M50N"
-#define PLUGIN_VERSION "1.1.0"
+#define PLUGIN_VERSION "1.2.0"
 
 #include <sourcemod>
 #include <sdktools>
