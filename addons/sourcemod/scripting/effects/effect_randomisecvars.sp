@@ -100,7 +100,7 @@ void Effect_RandomiseCvars_OnPluginStart()
 	si_cvars.SetArray("z_vomit_duration", {1.5, 0.4, 6.0}, 3);
 	si_cvars.SetArray("z_vomit_fade_duration", {5.0, 1.3, 20.0}, 3);
 	si_cvars.SetArray("z_vomit_fade_start", {5.0, 1.3, 20.0}, 3);
-	si_cvars.SetArray("z_vomit_fatigue", {3000.0, 750.0, 12000.0}, 3);
+	si_cvars.SetArray("z_vomit_fatigue", {3000.0, 0.1, 3001.0}, 3);
 	si_cvars.SetArray("z_vomit_float", {-130.0, -32.5, -520.0}, 3);
 	si_cvars.SetArray("z_vomit_hit_pitch_max", {15.0, 3.8, 60.0}, 3);
 	si_cvars.SetArray("z_vomit_hit_pitch_min", {-15.0, -3.8, -60.0}, 3);
@@ -345,9 +345,12 @@ void RandomiseCvars(StringMap cvars, bool defaults)
 		{
 			val = cv_vals[0];
 		}
-		else
+		else if (GetRandomInt(0, 1) == 0)
 		{
-			val = GetRandomFloat(cv_vals[1], cv_vals[2]);
+			val = GetRandomFloat(cv_vals[1], cv_vals[0]);
+		}
+		else {
+			val = GetRandomFloat(cv_vals[0], cv_vals[2]);
 		}
 
 		ConVar cv = FindConVar(cv_name);
