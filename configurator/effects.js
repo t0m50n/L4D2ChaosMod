@@ -172,31 +172,31 @@ let effects_tree = {
 				},
 				{
 					text: "1 HP Survivors",
-					start: "chaosmod_sethpplayer @survivors 1; chaosmod_settemphpplayer 0",
-					end: "chaosmod_sethpplayer @survivors 80; chaosmod_settemphpplayer 0",
+					start: "chaosmod_sethpplayer @survivors 1; chaosmod_settemphpplayer @survivors 0",
+					end: "chaosmod_cheat @survivors give health; chaosmod_settemphpplayer @survivors 0",
 					active_time: "normal"
 				},
 				{
 					text: "Give Grenade Launchers",
-					start: "sm_giveweapon @survivors grenade_launcher",
+					start: "chaosmod_cheat @survivors give grenade_launcher",
 					end: "",
 					active_time: "none"
 				},
 				{
 					text: "Give Chainsaws",
-					start: "sm_giveweapon @survivors chainsaw",
+					start: "chaosmod_cheat @survivors give chainsaw",
 					end: "",
 					active_time: "none"
 				},
 				{
 					text: "Give Gnomes",
-					start: "sm_giveweapon @survivors gnome",
+					start: "chaosmod_cheat @survivors give gnome",
 					end: "",
 					active_time: "none"
 				},
 				{
 					text: "Give Defibrillators",
-					start: "sm_giveweapon @survivors defibrillator",
+					start: "chaosmod_cheat @survivors give defibrillator",
 					end: "",
 					active_time: "none"
 				},
