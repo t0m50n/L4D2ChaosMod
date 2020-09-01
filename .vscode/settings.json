@@ -1,3 +1,6 @@
 {
-    "sourcepawnLanguageServer.sourcemod_home": "E:/SteamLibrary/steamapps/common/Left 4 Dead 2 Dedicated Server/left4dead2/addons/sourcemod/scripting/include"
+    "sourcepawnLanguageServer.sourcemod_home": "E:\\SteamLibrary\\steamapps\\common\\Left 4 Dead 2 Dedicated Server\\left4dead2\\addons\\sourcemod\\scripting\\include",
+    "python.pythonPath": "C:\\Users\\Tomson\\AppData\\Local\\Programs\\Python\\Python38\\python.exe",
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true
 }

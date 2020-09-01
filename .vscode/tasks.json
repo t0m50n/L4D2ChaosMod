@@ -4,9 +4,15 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "spcomp",
+            "label": "build",
             "type": "shell",
-            "command": "compile.bat",
+            "command": "python",
+            "args": [
+                "build.py",
+                "-d",
+                "E:/SteamLibrary/steamapps/common/Left 4 Dead 2 Dedicated Server",
+                "E:/SteamLibrary/steamapps/common/Left 4 Dead 2 Dedicated Server/left4dead2/addons/sourcemod/scripting/spcomp.exe"
+            ],
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -25,10 +31,16 @@
             }
         },
         {
-            "label": "spcomp third party",
+            "label": "build with third party",
             "type": "shell",
-            "command": "compile.bat",
-            "args": ["tp"],
+            "command": "python",
+            "args": [
+                "build.py",
+                "-t",
+                "-d",
+                "E:/SteamLibrary/steamapps/common/Left 4 Dead 2 Dedicated Server",
+                "E:/SteamLibrary/steamapps/common/Left 4 Dead 2 Dedicated Server/left4dead2/addons/sourcemod/scripting/spcomp.exe"
+            ],
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -45,6 +57,6 @@
                 "base": "$msCompile",
                 "fileLocation": ["relative", "${workspaceFolder}"],
             }
-        }
+        },
     ]
 }
