@@ -1,0 +1,26 @@
+{
+    "auto_infected_spawner": {
+        "date": "2020-09-03 13:35:40.996571",
+        "version": "1.0"
+    },
+    "dhooks": {
+        "date": "2020-09-03 13:35:25.470112",
+        "version": "dhooks-2.2.0-detours14a-sm110"
+    },
+    "l4dhooks": {
+        "date": "2020-09-03 13:35:29.194886",
+        "version": "1.21"
+    },
+    "spawn_uncommons": {
+        "date": "2020-09-03 13:35:35.455479",
+        "version": "1.0.9"
+    },
+    "weapon_damage_mod": {
+        "date": "2020-09-03 13:35:32.630926",
+        "version": "1.0.4"
+    },
+    "weapon_handling_api": {
+        "date": "2020-09-03 13:35:44.248296",
+        "version": "1.0.4"
+    }
+}

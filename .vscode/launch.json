@@ -20,7 +20,7 @@
             "args": [
                 "-t",
                 "-d",
-                "E:/SteamLibrary/steamapps/common/Left 4 Dead 2 Dedicated Server/"
+                "E:/SteamLibrary/steamapps/common/Left 4 Dead 2 Dedicated Server/",
                 "E:/SteamLibrary/steamapps/common/Left 4 Dead 2 Dedicated Server/left4dead2/addons/sourcemod/scripting/spcomp.exe"
             ]
         }

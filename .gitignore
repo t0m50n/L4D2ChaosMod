@@ -1,3 +1,6 @@
 dist
 *.zip
 *.smx
+.vscode/.ropeproject/objectdb
+__pycache__/
+pyenv/
