@@ -6,7 +6,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "python",
+            "command": ".\\pyenv\\Scripts\\python",
             "args": [
                 "build.py",
                 "-d",
@@ -33,7 +33,7 @@
         {
             "label": "build with third party",
             "type": "shell",
-            "command": "python",
+            "command": ".\\pyenv\\Scripts\\python",
             "args": [
                 "build.py",
                 "-t",

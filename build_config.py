@@ -1,3 +1,11 @@
+'''
+
+Contains configuration data for build.py
+
+'''
+
+__author__ = 't0m50n'
+
 import functools
 import os
 import io

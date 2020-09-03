@@ -4,3 +4,5 @@ dist
 .vscode/.ropeproject/objectdb
 __pycache__/
 pyenv/
+build/
+dist/
