@@ -73,7 +73,7 @@ public void OnPluginStart()
 
 	LoadTranslations("common.phrases.txt");
 	
-	g_game_conf = LoadGameConfigFile("l4d2_custom_commands");
+	g_game_conf = LoadGameConfigFile("l4d2_chaos_mod");
 	if(g_game_conf == INVALID_HANDLE)
 	{
 		SetFailState("Couldn't find the offsets and signatures file. Please, check that it is installed correctly.");

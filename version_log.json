@@ -1,26 +1,34 @@
 {
     "auto_infected_spawner": {
-        "date": "2020-09-03 13:35:40.996571",
+        "date": "2020-09-08 04:36:27.038910",
         "version": "1.0"
     },
     "dhooks": {
-        "date": "2020-09-03 13:35:25.470112",
+        "date": "2020-09-08 04:36:18.169263",
         "version": "dhooks-2.2.0-detours14a-sm110"
     },
+    "dissolve_infected": {
+        "date": "2020-09-08 04:36:34.147264",
+        "version": "1.15"
+    },
+    "dissolve_infected_gamedata": {
+        "date": "2020-09-08 04:36:36.186702",
+        "version": "l4d_dissolve_infected"
+    },
     "l4dhooks": {
-        "date": "2020-09-03 13:35:29.194886",
+        "date": "2020-09-08 04:36:20.764314",
         "version": "1.21"
     },
     "spawn_uncommons": {
-        "date": "2020-09-03 13:35:35.455479",
+        "date": "2020-09-08 04:36:25.133235",
         "version": "1.0.9"
     },
     "weapon_damage_mod": {
-        "date": "2020-09-03 13:35:32.630926",
+        "date": "2020-09-08 04:36:22.376448",
         "version": "1.0.4"
     },
     "weapon_handling_api": {
-        "date": "2020-09-03 13:35:44.248296",
+        "date": "2020-09-08 04:36:30.230408",
         "version": "1.0.4"
     }
 }

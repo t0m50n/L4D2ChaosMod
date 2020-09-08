@@ -15,6 +15,7 @@ from zipfile import ZipFile
 
 BASE_FORUM_URL = 'https://forums.alliedmods.net/'
 BUILD_FOLDER = 'build'
+DIST_FOLDER = 'dist'
 PLUGIN_VERSION_REGEX = re.compile(r'#define[^"\nA-Za-z_]*?PLUGIN_VERSION[^"\n]*?"([^"\n]*?)"')
 
 first_scripts = [
@@ -31,6 +32,14 @@ def install(path, is_zip, resp):
         with open(os.path.join(BUILD_FOLDER, path), 'wb') as f:
             f.write(resp.content)
 
+
+'''
+Name - Any name you want
+Post - Allied modders forum post id
+Link Predicate - Conditions that must hold for the BeautifulSoup anchor tag that is used to download the file
+Install - Function ran after download to extract/move files
+Scripts - Name of scripts to be compiled
+'''
 Dependency = namedtuple('Dependency', ['name', 'post', 'link_predicate', 'install_func', 'scripts'])
 dependencies = [
     Dependency(
@@ -82,4 +91,21 @@ dependencies = [
                                        path='',
                                        is_zip=True),
         scripts=['WeaponHandling.sp']),
+
+    Dependency(
+        name='dissolve_infected',
+        post='2587658',
+        link_predicate=lambda a: a.text == 'Get Source',
+        install_func=functools.partial(install,
+                                       path='addons/sourcemod/scripting/l4d_dissolve_infected.sp',
+                                       is_zip=False),
+        scripts=['l4d_dissolve_infected.sp']),
+    Dependency(
+        name='dissolve_infected_gamedata',
+        post='2587658',
+        link_predicate=lambda a: a.text == 'l4d_dissolve_infected.txt',
+        install_func=functools.partial(install,
+                                       path='addons/sourcemod/gamedata/l4d_dissolve_infected.txt',
+                                       is_zip=False),
+        scripts=[]),
 ]

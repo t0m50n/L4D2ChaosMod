@@ -1,6 +1,6 @@
 '''
 
-Packages relevant files from a completed build along with sumplementary material into a zip file
+Packages relevant files from the completed build along with sumplementary material into a zip file
 
 '''
 
@@ -11,25 +11,27 @@ import os
 
 import build_config
 
-shutil.rmtree('dist', ignore_errors=True)
+print('Copying files to dist folder')
+shutil.rmtree(build_config.DIST_FOLDER, ignore_errors=True)
 shutil.copytree(os.path.join(build_config.BUILD_FOLDER, 'addons'),
-                os.path.join('dist/addons'),
-                dirs_exist_ok=True,
+                os.path.join(build_config.DIST_FOLDER, 'addons'),
                 ignore=shutil.ignore_patterns('*.sp', '*.inc'))
-shutil.copytree(os.path.join(build_config.BUILD_FOLDER, 'cfg'), 'dist/cfg')
-shutil.copytree('configurator', 'dist/configurator')
-shutil.copy('README.md', 'dist/README.md')
-shutil.copy('CREDITS.md', 'dist/CREDITS.md')
-shutil.copy('LICENSE.txt', 'dist/LICENSE.txt')
+shutil.copytree(os.path.join(build_config.BUILD_FOLDER, 'cfg'),
+                os.path.join(build_config.DIST_FOLDER, 'cfg'))
+shutil.copytree('configurator', os.path.join(build_config.DIST_FOLDER, 'configurator'))
+shutil.copy('README.md', os.path.join(build_config.DIST_FOLDER, 'README.md'))
+shutil.copy('CREDITS.md', os.path.join(build_config.DIST_FOLDER, 'CREDITS.md'))
+shutil.copy('LICENSE.txt', os.path.join(build_config.DIST_FOLDER, 'LICENSE.txt'))
 
 # Remove empty folders
 empty = set()
-for root, dirnames, filenames in os.walk('dist', topdown=False):
+for root, dirnames, filenames in os.walk(build_config.DIST_FOLDER, topdown=False):
     dirnames = [d for d in dirnames if os.path.join(root, d) not in empty]
     if not dirnames and not filenames:
         empty.add(root)
         os.rmdir(root)
 
+print('Creating zip')
 with open(os.path.join(build_config.BUILD_FOLDER, 'addons/sourcemod/scripting/chaos_mod.sp'), 'r') as f:
     version = build_config.PLUGIN_VERSION_REGEX.search(f.read()).group(1)
-shutil.make_archive(f'L4D2_Chaos_Mod_v{version}', 'zip', 'dist')
+shutil.make_archive(f'L4D2_Chaos_Mod_v{version}', 'zip', build_config.DIST_FOLDER)
