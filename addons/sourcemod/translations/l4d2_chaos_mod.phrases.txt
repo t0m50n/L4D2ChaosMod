@@ -1,0 +1,262 @@
+"Phrases"
+{
+	"Effect Half Gravity"
+	{
+		"en"	"Half Gravity"
+	}
+
+	"Effect Double Gravity"
+	{
+		"en"	"Double Gravity"
+	}
+
+	"Effect Quarter Gravity"
+	{
+		"en"	"Quarter Gravity"
+	}
+
+	"Effect Zero Gravity"
+	{
+		"en"	"Zero Gravity"
+	}
+
+	"Effect Shuffle Names"
+	{
+		"en"	"Shuffle Names"
+	}
+
+	"Effect Throw Everyone"
+	{
+		"en"	"Throw Everyone"
+	}
+
+	"Effect Dissolve Infected on Death"
+	{
+		"en"	"Dissolve Infected on Death"
+	}
+
+	"Effect Raining Gascans"
+	{
+		"en"	"Raining Gascans"
+	}
+
+	"Effect Ice Rink"
+	{
+		"en"	"Ice Rink"
+	}
+
+	"Effect Auto Bunnyhop"
+	{
+		"en"	"Auto Bunnyhop"
+	}
+
+	"Effect Half Speed"
+	{
+		"en"	"Half Speed"
+	}
+
+	"Effect Double Speed"
+	{
+		"en"	"Double Speed"
+	}
+
+	"Effect Plane Crash"
+	{
+		"en"	"Plane Crash"
+	}
+
+	"Effect High Ping"
+	{
+		"en"	"High Ping"
+	}
+
+	"Effect Packet Loss"
+	{
+		"en"	"Packet Loss"
+	}
+
+	"Effect Super Crouch"
+	{
+		"en"	"Super Crouch"
+	}
+
+	"Effect Infinite Ammo"
+	{
+		"en"	"Infinite Ammo"
+	}
+
+	"Effect Bots Keep Shooting"
+	{
+		"en"	"Bots Keep Shooting"
+	}
+
+	"Effect Freeze survivors"
+	{
+		"en"	"Freeze survivors"
+	}
+
+	"Effect Blind"
+	{
+		"en"	"Blind"
+	}
+
+	"Effect Half Blind"
+	{
+		"en"	"Half Blind"
+	}
+
+	"Effect Too Many Pills"
+	{
+		"en"	"Too Many Pills"
+	}
+
+	"Effect Teleport Back to Saferoom"
+	{
+		"en"	"Teleport Back to Saferoom"
+	}
+
+	"Effect Big Pants"
+	{
+		"en"	"Big Pants"
+	}
+
+	"Effect Vomit Survivors"
+	{
+		"en"	"Vomit Survivors"
+	}
+
+	"Effect 1 HP Survivors"
+	{
+		"en"	"1 HP Survivors"
+	}
+
+	"Effect Give Grenade Launchers"
+	{
+		"en"	"Give Grenade Launchers"
+	}
+
+	"Effect Give Chainsaws"
+	{
+		"en"	"Give Chainsaws"
+	}
+
+	"Effect Give Gnomes"
+	{
+		"en"	"Give Gnomes"
+	}
+
+	"Effect Give Defibrillators"
+	{
+		"en"	"Give Defibrillators"
+	}
+
+	"Effect High Weapon Damage"
+	{
+		"en"	"High Weapon Damage"
+	}
+
+	"Effect Low Weapon Damage"
+	{
+		"en"	"Low Weapon Damage"
+	}
+
+	"Effect Rapid Fire"
+	{
+		"en"	"Rapid Fire"
+	}
+
+	"Effect Slow Fire"
+	{
+		"en"	"Slow Fire"
+	}
+
+	"Effect Fast Reload"
+	{
+		"en"	"Fast Reload"
+	}
+
+	"Effect Slow Reload"
+	{
+		"en"	"Slow Reload"
+	}
+
+	"Effect High Fall Damage"
+	{
+		"en"	"High Fall Damage"
+	}
+
+	"Effect No Fall Damage"
+	{
+		"en"	"No Fall Damage"
+	}
+
+	"Effect Elderly Zombies"
+	{
+		"en"	"Elderly Zombies"
+	}
+
+	"Effect Marathon Zombies"
+	{
+		"en"	"Marathon Zombies"
+	}
+
+	"Effect Baby Zombies"
+	{
+		"en"	"Baby Zombies"
+	}
+
+	"Effect Giant Zombies"
+	{
+		"en"	"Giant Zombies"
+	}
+
+	"Effect Endless Hordes"
+	{
+		"en"	"Endless Hordes"
+	}
+
+	"Effect Too Many Specials"
+	{
+		"en"	"Too Many Specials"
+	}
+
+	"Effect Too Many Boomers"
+	{
+		"en"	"Too Many Boomers"
+	}
+
+	"Effect Too Many Spitters"
+	{
+		"en"	"Too Many Spitters"
+	}
+
+	"Effect Taaank"
+	{
+		"en"	"Taaank"
+	}
+
+	"Effect Spawn Clown Horde"
+	{
+		"en"	"Spawn Clown Horde"
+	}
+
+	"Effect Spawn Mud Horde"
+	{
+		"en"	"Spawn Mud Horde"
+	}
+
+	"Effect Spawn Jimmy Horde"
+	{
+		"en"	"Spawn Jimmy Horde"
+	}
+
+	"Effect Raining Witches"
+	{
+		"en"	"Raining Witches"
+	}
+
+	"Effect Randomise special infected"
+	{
+		"en"	"Randomise special infected"
+	}
+}

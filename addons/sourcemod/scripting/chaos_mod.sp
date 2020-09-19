@@ -47,6 +47,8 @@ ConVar g_long_time_duration;
 
 public void OnPluginStart()
 {
+	LoadTranslations("l4d2_chaos_mod.phrases");
+
 	CreateConVar("chaosmod_version", PLUGIN_VERSION, " Version of Chaos Mod on this server ", FCVAR_SPONLY|FCVAR_DONTRECORD);
 	g_enabled = CreateConVar("chaosmod_enabled", "1", "Enable/Disable Chaos Mod", FCVAR_NOTIFY);
 	g_time_between_effects = CreateConVar("chaosmod_time_between_effects", "30", "How long to wait in seconds between activating effects", FCVAR_NOTIFY, true, 0.1);
@@ -353,12 +355,22 @@ public Action Timer_UpdatePanel(Handle timer, any unused)
 	{
 		time_until_next_effect = g_time_between_effects.IntValue;
 	}
-	
-	Panel p = new Panel();
-	
-	p.SetTitle("Chaos Mod");
-	
-	DrawProgressBarPanelText(p, 1 - (time_until_next_effect / g_time_between_effects.FloatValue));
+
+	float pbar_fullness = 1 - (time_until_next_effect / g_time_between_effects.FloatValue);
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		// If a menu is open then don't show the panel
+		if (!IsClientInGame(i) ||
+			(!(GetClientMenu(i) == MenuSource_RawPanel) && !(GetClientMenu(i) == MenuSource_None)))
+		{
+			continue;
+		}
+
+		Panel p = CreateEffectPanel(i, pbar_fullness);
+		p.Send(i, Panel_DoNothing, RoundToFloor(PANEL_UPDATE_RATE) + 1);
+		delete p;
+	}
+
 	if (time_until_next_effect > 0)
 	{
 		time_until_next_effect--;
@@ -367,8 +379,6 @@ public Action Timer_UpdatePanel(Handle timer, any unused)
 	for (int i = g_active_effects.Length - 1; i >= 0; i--)
 	{
 		StringMap active_effect = view_as<StringMap>(g_active_effects.Get(i));
-		
-		DrawActiveEffectPanelText(p, active_effect);
 
 		int time_left;
 		active_effect.GetValue("time_left", time_left);
@@ -378,24 +388,33 @@ public Action Timer_UpdatePanel(Handle timer, any unused)
 			g_active_effects.Erase(i);
 			StopEffect(active_effect);
 			delete active_effect;
-			continue;
 		}
-		active_effect.SetValue("time_left", time_left - 1);
+		else
+		{
+			active_effect.SetValue("time_left", time_left - 1);
+		}
+		
 	}
 	no_active_effects = g_active_effects.Length;
-	
-	for (int i = 1; i <= MaxClients; i++)
-	{
-		// If a menu is open then don't show the panel
-		if (IsClientInGame(i) && (GetClientMenu(i) == MenuSource_RawPanel || GetClientMenu(i) == MenuSource_None))
-		{
-			p.Send(i, Panel_DoNothing, RoundToFloor(PANEL_UPDATE_RATE) + 1);
-		}
-	}
-	
-	delete p;
 
 	return Plugin_Handled;
+}
+
+Panel CreateEffectPanel(int client, float pbar_fullness)
+{
+	Panel p = new Panel();
+	
+	p.SetTitle("Chaos Mod");
+	
+	DrawProgressBarPanelText(p, pbar_fullness);
+
+	for (int i = g_active_effects.Length - 1; i >= 0; i--)
+	{
+		StringMap active_effect = view_as<StringMap>(g_active_effects.Get(i));
+		DrawActiveEffectPanelText(p, client, active_effect);
+	}
+
+	return p;
 }
 
 void DrawProgressBarPanelText(Panel panel, float fullness)
@@ -417,13 +436,15 @@ void DrawProgressBarPanelText(Panel panel, float fullness)
 	panel.DrawText(pbar);
 }
 
-void DrawActiveEffectPanelText(Panel panel, StringMap active_effect)
+void DrawActiveEffectPanelText(Panel panel, int client, StringMap active_effect)
 {
 	int time_left;
 	active_effect.GetValue("time_left", time_left);
 	
 	char effect_name[255];
 	active_effect.GetString("name", effect_name, sizeof(effect_name));
+	char effect_tran_name[255];
+	Format(effect_tran_name, sizeof(effect_tran_name), "Effect %s", effect_name);
 	
 	bool is_timed_effect;
 	active_effect.GetValue("is_timed_effect", is_timed_effect);
@@ -431,11 +452,11 @@ void DrawActiveEffectPanelText(Panel panel, StringMap active_effect)
 	char panel_text[255];
 	if (is_timed_effect)
 	{
-		Format(panel_text, sizeof(panel_text), "%s (%d)", effect_name, time_left);
+		Format(panel_text, sizeof(panel_text), "%T (%d)", effect_tran_name, client, time_left);
 	}	
 	else
 	{
-		Format(panel_text, sizeof(panel_text), "%s", effect_name);
+		Format(panel_text, sizeof(panel_text), "%T", effect_tran_name, client);
 	}
 
 	panel.DrawText(panel_text);
