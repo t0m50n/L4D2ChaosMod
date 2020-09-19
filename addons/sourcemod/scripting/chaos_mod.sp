@@ -63,6 +63,7 @@ public void OnPluginStart()
 	g_effects = Parse_KeyValueFile(EFFECTS_PATH);
 
 	RegAdminCmd("chaosmod_vote", Command_Vote, ADMFLAG_GENERIC, "Starts vote to enable/disable chaosmod");
+	RegAdminCmd("chaosmod_refresh", Command_Refresh, ADMFLAG_GENERIC, "Reloads effects from config");
 	g_time_between_effects.AddChangeHook(Cvar_TimeBetweenEffectsChanged);
 	g_enabled.AddChangeHook(Cvar_EnabledChanged);
 	HookEvent("server_cvar", Event_Cvar, EventHookMode_Pre);
@@ -217,6 +218,13 @@ public int Vote_Callback(Menu menu, MenuAction action, int param1, int param2)
 			g_enabled.SetString(enable);
 		}
 	}
+}
+
+public Action Command_Refresh(int client, int args)
+{
+	delete g_effects;
+	g_effects = Parse_KeyValueFile(EFFECTS_PATH);
+	return Plugin_Handled;
 }
 
 public Action Command_Start_Effect(int client, int args)
