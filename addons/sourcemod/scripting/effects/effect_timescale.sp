@@ -12,10 +12,7 @@ public Action Command_TimeScale(int client, int args)
 	GetCmdArg(1, s_scale, sizeof(s_scale));
 	float f_scale = StringToFloat(s_scale);
 
-	if (g_func_timescale > 0)
-    {
-        RemoveEntity(g_func_timescale);
-    }
+	Effect_TimeScale_Cleanup();
     
 	g_func_timescale = CreateEntityByName("func_timescale");
 	DispatchKeyValueFloat(g_func_timescale, "desiredTimescale", f_scale);
@@ -26,4 +23,17 @@ public Action Command_TimeScale(int client, int args)
 	AcceptEntityInput(g_func_timescale, "Start");
 
 	return Plugin_Handled;
+}
+
+public void Effect_TimeScale_OnMapEnd()
+{
+	Effect_TimeScale_Cleanup();
+}
+
+void Effect_TimeScale_Cleanup()
+{
+	if (g_func_timescale > 0)
+    {
+        RemoveEntity(g_func_timescale);
+    }
 }

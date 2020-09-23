@@ -128,6 +128,13 @@ public void OnMapStart()
 	Effect_PlaneCrash_OnMapStart();
 }
 
+public void OnMapEnd()
+{
+	Effect_PlaneCrash_OnMapEnd();
+	Effect_TimeScale_OnMapEnd();
+	Effect_DontRush_OnMapEnd();
+}
+
 public void Event_RoundStart(Handle event, const char[] name, bool dontBroadcast)
 {
 	Effect_DontRush_OnRoundStart();

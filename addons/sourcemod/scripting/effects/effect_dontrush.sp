@@ -42,6 +42,11 @@ public void Effect_DontRush_OnRoundStart()
 	g_dontrush_supported = false;
 }
 
+void Effect_DontRush_OnMapEnd()
+{
+	g_dontrush_supported = false;
+}
+
 public Action Command_DontRush(int client, int args)
 {
 	if (!g_dontrush_supported)

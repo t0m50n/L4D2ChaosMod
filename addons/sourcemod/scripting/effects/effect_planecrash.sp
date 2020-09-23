@@ -92,6 +92,11 @@ public void Effect_PlaneCrash_OnMapStart()
 	}
 }
 
+public void Effect_PlaneCrash_OnMapEnd()
+{
+	DeletePrevCrash();
+}
+
 bool IsValidEntRef(int entity)
 {
 	return entity && EntRefToEntIndex(entity) != INVALID_ENT_REFERENCE;
