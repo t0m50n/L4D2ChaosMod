@@ -19,9 +19,7 @@ public Action Command_CvarSilent(int client, int args)
 
 	SetConVarString(cvar, value);
 
-	char client_name[255];
-	GetClientName(client, client_name, sizeof(client_name));
-	LogMessage("\"%s\" changed cvar (cvar \"%s\") (value \"%s\")", client_name, s_cvar, value);
+	LogAction(client, -1, "changed cvar \"%s\" to \"%s\"", s_cvar, value);
 	
 	return Plugin_Handled;
 }

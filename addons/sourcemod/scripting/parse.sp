@@ -60,18 +60,18 @@ ArrayList Parse_KeyValueFile(const char[] path)
 		effects.Push(effect);
 	} while (kv.GotoNextKey());
 	delete kv;
-
+	
+	LogMessage("Successfully loaded %d effects", effects.Length);
 	#if defined DEBUG
-		PrintToServer("Number of effects: %d", effects.Length);
 		for (int i = 0; i < effects.Length; i++)
 		{
 			char effect_name[255];
 			StringMap effect = view_as<StringMap>(effects.Get(i));
 			effect.GetString("name", effect_name, sizeof(effect_name));
-			PrintToServer(effect_name);
+			LogMessage("Loaded effect \"%s\"", effect_name);
 		}
 	#endif
-	
+
 	return effects;
 }
 
