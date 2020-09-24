@@ -15,13 +15,13 @@ let effects_tree = {
 					text: "Half Gravity",
 					start: "chaosmod_cvar sv_gravity 400",
 					end: "chaosmod_cvar sv_gravity 800",
-					active_time: "normal"
+					active_time: "long"
 				},
 				{
 					text: "Double Gravity",
 					start: "chaosmod_cvar sv_gravity 1600",
 					end: "chaosmod_cvar sv_gravity 800",
-					active_time: "normal"
+					active_time: "long"
 				},
 				{
 					text: "Quarter Gravity",
@@ -51,7 +51,7 @@ let effects_tree = {
 					text: "Dissolve Infected on Death",
 					start: "chaosmod_cvar l4d_dissolve_allow 1",
 					end: "exec sourcemod/l4d_dissolve_infected",
-					active_time: "normal"
+					active_time: "long"
 				},
 				{
 					text: "Raining Gascans",
@@ -63,13 +63,13 @@ let effects_tree = {
 					text: "Ice Rink",
 					start: "exec sourcemod/chaosmod/ice_rink_start",
 					end: "exec sourcemod/chaosmod/ice_rink_end",
-					active_time: "normal"
+					active_time: "long"
 				},
 				{
 					text: "Auto Bunnyhop",
 					start: "chaosmod_bhop_enabled 1",
 					end: "chaosmod_bhop_enabled 0",
-					active_time: "long"
+					active_time: "normal"
 				},
 				{
 					text: "Half Speed",
@@ -91,13 +91,13 @@ let effects_tree = {
 				},
 				{
 					text: "High Ping",
-					start: "chaosmod_cvar net_fakelag 500",
+					start: "chaosmod_cvar net_fakelag 150",
 					end: "chaosmod_cvar net_fakelag 0",
 					active_time: "normal"
 				},
 				{
 					text: "Packet Loss",
-					start: "chaosmod_cvar net_fakeloss 50",
+					start: "chaosmod_cvar net_fakeloss 20",
 					end: "chaosmod_cvar net_fakeloss 0",
 					active_time: "normal"
 				},
@@ -111,7 +111,7 @@ let effects_tree = {
 			children: [
 				{
 					text: "Super Crouch",
-					start: "chaosmod_cvar survivor_crouch_speed 400",
+					start: "chaosmod_cvar survivor_crouch_speed 250",
 					end: "chaosmod_cvar survivor_crouch_speed 75",
 					active_time: "normal"
 				},
@@ -125,7 +125,7 @@ let effects_tree = {
 					text: "Bots Keep Shooting",
 					start: "chaosmod_cvar sb_open_fire 1",
 					end: "chaosmod_cvar sb_open_fire 0",
-					active_time: "normal"
+					active_time: "long"
 				},
 				{
 					text: "Freeze survivors",
@@ -174,7 +174,7 @@ let effects_tree = {
 					text: "1 HP Survivors",
 					start: "chaosmod_sethpplayer @survivors 1; chaosmod_settemphpplayer @survivors 0",
 					end: "chaosmod_cheat @survivors give health; chaosmod_settemphpplayer @survivors 0",
-					active_time: "normal"
+					active_time: "short"
 				},
 				{
 					text: "Give Grenade Launchers",
@@ -216,25 +216,25 @@ let effects_tree = {
 					text: "Rapid Fire",
 					start: "chaosmod_firerate 1.47",
 					end: "chaosmod_firerate 1",
-					active_time: "normal"
+					active_time: "long"
 				},
 				{
 					text: "Slow Fire",
 					start: "chaosmod_firerate 0.68",
 					end: "chaosmod_firerate 1",
-					active_time: "normal"
+					active_time: "long"
 				},
 				{
 					text: "Fast Reload",
 					start: "chaosmod_reloadspeed 2.0",
 					end: "chaosmod_reloadspeed 1",
-					active_time: "normal"
+					active_time: "long"
 				},
 				{
 					text: "Slow Reload",
 					start: "chaosmod_reloadspeed 0.5",
 					end: "chaosmod_reloadspeed 1",
-					active_time: "normal"
+					active_time: "long"
 				},
 				{
 					text: "High Fall Damage",
@@ -272,13 +272,13 @@ let effects_tree = {
 					text: "Baby Zombies",
 					start: "chaosmod_zsize 0.5",
 					end: "chaosmod_zsize 1",
-					active_time: "normal"
+					active_time: "long"
 				},
 				{
 					text: "Giant Zombies",
 					start: "chaosmod_zsize 2",
 					end: "chaosmod_zsize 1",
-					active_time: "normal"
+					active_time: "long"
 				},
 				{
 					text: "Endless Hordes",
@@ -330,7 +330,7 @@ let effects_tree = {
 				},
 				{
 					text: "Raining Witches",
-					start: "chaosmod_entityrain @all witch 2",
+					start: "chaosmod_entityrain @all witch 1",
 					end: "",
 					active_time: "none"
 				},
