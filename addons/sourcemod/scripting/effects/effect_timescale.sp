@@ -32,8 +32,21 @@ public void Effect_TimeScale_OnMapEnd()
 
 void Effect_TimeScale_Cleanup()
 {
-	if (g_func_timescale > 0)
-    {
-        RemoveEntity(g_func_timescale);
-    }
+	if (g_func_timescale < 0)
+	{
+		return;
+	}
+
+	char classname[255];
+	GetEntityClassname(g_func_timescale, classname, sizeof(classname));
+
+	// func_timescale is sometimes deleted automatically by the engine
+	if (!IsValidEntity(g_func_timescale) ||
+		!StrEqual(classname, "func_timescale"))
+	{
+		return;
+	}
+
+	RemoveEntity(g_func_timescale);
+	g_func_timescale = -1;
 }
